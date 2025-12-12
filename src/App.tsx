@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { PianoKeyboard } from './components/PianoKeyboard/PianoKeyboard';
 import { ScoreView } from './components/ScoreView/ScoreView';
 import { ChordPanel } from './components/ChordPanel/ChordPanel';
@@ -18,9 +18,9 @@ function App() {
   const activeNotes = usePianoStore((state) => state.activeNotes);
   const audioInitialized = useAudioStore((state) => state.initialized);
 
-  const handleChordSelect = (_chordName: string, midiNotes: number[]) => {
+  const handleChordSelect = useCallback((_chordName: string, midiNotes: number[]) => {
     setSelectedChordNotes(new Set(midiNotes));
-  };
+  }, []);
 
   // Zobrazit welcome dialog při startu, pokud audio není inicializováno
   useEffect(() => {

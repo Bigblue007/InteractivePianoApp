@@ -8,7 +8,21 @@ export class MIDIManager {
    * Zkontroluje dostupnost Web MIDI API
    */
   static isAvailable(): boolean {
-    return 'requestMIDIAccess' in navigator;
+    // Zkontrolovat, zda je API dostupné
+    const hasAPI = 'requestMIDIAccess' in navigator;
+    
+    // Pro Firefox: zkontrolovat, zda je to verze s podporou (108+)
+    if (hasAPI) {
+      const userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.includes('firefox')) {
+        const firefoxVersion = userAgent.match(/firefox\/(\d+)/);
+        const version = firefoxVersion ? parseInt(firefoxVersion[1], 10) : 0;
+        // Firefox 108+ má nativní podporu
+        return version >= 108;
+      }
+    }
+    
+    return hasAPI;
   }
 
   /**
@@ -16,30 +30,43 @@ export class MIDIManager {
    */
   static getBrowserInfo(): { name: string; supported: boolean; message?: string } {
     const userAgent = navigator.userAgent.toLowerCase();
+    const hasMIDISupport = 'requestMIDIAccess' in navigator;
     
     if (userAgent.includes('chrome') || userAgent.includes('edge') || userAgent.includes('chromium')) {
-      return { name: 'Chrome/Edge', supported: true };
+      return { name: 'Chrome/Edge', supported: hasMIDISupport };
     }
     
     if (userAgent.includes('firefox')) {
-      return { 
-        name: 'Firefox', 
-        supported: false,
-        message: 'Firefox má omezenou podporu Web MIDI API a vyžaduje add-on. Doporučujeme použít Chrome nebo Edge.'
-      };
+      // Firefox 108+ má nativní podporu Web MIDI API
+      const firefoxVersion = userAgent.match(/firefox\/(\d+)/);
+      const version = firefoxVersion ? parseInt(firefoxVersion[1], 10) : 0;
+      
+      if (hasMIDISupport) {
+        return { 
+          name: 'Firefox', 
+          supported: true,
+          message: version < 108 ? 'Pro Web MIDI API použijte Firefox 108 nebo novější.' : undefined
+        };
+      } else {
+        return { 
+          name: 'Firefox', 
+          supported: false,
+          message: 'Firefox vyžaduje verzi 108 nebo novější pro podporu Web MIDI API. Doporučujeme použít Chrome nebo Edge.'
+        };
+      }
     }
     
     if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
       return { 
         name: 'Safari', 
-        supported: 'requestMIDIAccess' in navigator,
-        message: 'Safari má částečnou podporu Web MIDI API. Ověřte, že používáte nejnovější verzi.'
+        supported: hasMIDISupport,
+        message: hasMIDISupport ? 'Safari má částečnou podporu Web MIDI API. Ověřte, že používáte nejnovější verzi.' : 'Safari nemá plnou podporu Web MIDI API. Doporučujeme použít Chrome nebo Edge.'
       };
     }
     
     return { 
       name: 'Neznámý', 
-      supported: 'requestMIDIAccess' in navigator 
+      supported: hasMIDISupport 
     };
   }
 
@@ -47,10 +74,24 @@ export class MIDIManager {
    * Zkontroluje, zda je připojení přes HTTPS nebo localhost
    */
   static isSecureContext(): boolean {
-    return window.isSecureContext || 
+    // Firefox může být přísnější s secure context pro HTTP localhost
+    const isSecure = window.isSecureContext || 
            location.protocol === 'https:' || 
            location.hostname === 'localhost' || 
-           location.hostname === '127.0.0.1';
+           location.hostname === '127.0.0.1' ||
+           location.hostname === '[::1]';
+    
+    // Debug pro Firefox
+    if (typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox')) {
+      console.log('Secure context check:', {
+        windowIsSecureContext: window.isSecureContext,
+        protocol: location.protocol,
+        hostname: location.hostname,
+        result: isSecure
+      });
+    }
+    
+    return isSecure;
   }
 
   /**
@@ -72,26 +113,50 @@ export class MIDIManager {
     }
 
     try {
+      // Pro Firefox: zkusit s různými možnostmi
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isFirefox = userAgent.includes('firefox');
+      
+      // Debug informace
+      if (isFirefox) {
+        const firefoxVersion = userAgent.match(/firefox\/(\d+)/);
+        const version = firefoxVersion ? parseInt(firefoxVersion[1], 10) : 0;
+        console.log(`Firefox verze: ${version}, Secure context: ${MIDIManager.isSecureContext()}, MIDI API dostupné: ${'requestMIDIAccess' in navigator}`);
+      }
+      
       this.access = await navigator.requestMIDIAccess({ sysex: false });
       this.setupEventListeners();
       return this.access;
     } catch (error) {
       const browserInfo = MIDIManager.getBrowserInfo();
       let errorMessage = `Nepodařilo se získat přístup k MIDI: ${error}`;
+      let detailedMessage = '';
       
       if (error instanceof Error) {
-        if (error.name === 'SecurityError' || error.message.includes('permission')) {
+        if (error.name === 'SecurityError' || error.message.includes('permission') || error.message.includes('denied')) {
           if (browserInfo.name === 'Firefox') {
-            errorMessage = 'Firefox vyžaduje add-on pro Web MIDI API. Doporučujeme použít Chrome nebo Edge pro plnou podporu.';
+            errorMessage = 'Nepodařilo se získat oprávnění k MIDI.';
+            detailedMessage = `Pokud jste dříve odmítli přístup, resetujte oprávnění:
+1. Klikněte na ikonu zámku vlevo od adresního řádku
+2. Najděte "Oprávnění" → "MIDI zařízení" → změňte na "Povolit"
+Nebo vymazat data stránky: Nastavení → Soukromí → Cookies a data stránek → Odstranit data pro localhost`;
           } else {
             errorMessage = 'Nepodařilo se získat oprávnění k MIDI. Zkontrolujte nastavení prohlížeče a povolte přístup k MIDI zařízením.';
+          }
+        } else if (error.name === 'NotSupportedError' || error.name === 'NotAllowedError') {
+          if (browserInfo.name === 'Firefox') {
+            errorMessage = 'Firefox nepodporuje Web MIDI API nebo je přístup zamítnut.';
+            detailedMessage = 'Ujistěte se, že používáte Firefox 108 nebo novější. Pokud ano, zkuste resetovat oprávnění (viz výše).';
+          } else {
+            errorMessage = error.message;
           }
         } else {
           errorMessage = error.message;
         }
       }
       
-      throw new Error(errorMessage);
+      const fullMessage = detailedMessage ? `${errorMessage}\n\n${detailedMessage}` : errorMessage;
+      throw new Error(fullMessage);
     }
   }
 

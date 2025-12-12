@@ -130,12 +130,15 @@ export function MIDIConnector() {
           </button>
           {!isSecure && (
             <p className="info">
-              ⚠️ Web MIDI API vyžaduje HTTPS nebo localhost. V produkci musí být aplikace na HTTPS.
+              ⚠️ Web MIDI API vyžaduje HTTPS nebo localhost. 
+              {browserInfo.name === 'Firefox' && (
+                <span> Pro Firefox doporučujeme použít HTTPS. Spusťte aplikaci pomocí: <code>npm run dev:https</code></span>
+              )}
             </p>
           )}
           {browserInfo.name === 'Firefox' && (
             <p className="info">
-              ⚠️ Firefox má omezenou podporu Web MIDI API. Pro nejlepší kompatibilitu použijte Chrome nebo Edge.
+              ℹ️ Firefox 108+ má nativní podporu Web MIDI API. Pokud máte starší verzi, aktualizujte Firefox nebo použijte Chrome/Edge.
             </p>
           )}
         </>
@@ -156,7 +159,23 @@ export function MIDIConnector() {
           </select>
         </div>
       )}
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <div className="error">
+          <p>{error}</p>
+          {error.includes('Firefox') && (
+            <details style={{ marginTop: '10px', fontSize: '0.9em' }}>
+              <summary style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                Jak resetovat oprávnění ve Firefoxu
+              </summary>
+              <ol style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                <li><strong>Přes ikonu stránky:</strong> Klikněte na ikonu stránky (dokument) vlevo od adresního řádku → "Více informací" → záložka "Oprávnění" → najděte "MIDI zařízení" → změňte na "Povolit"</li>
+                <li><strong>Přes nastavení:</strong> Nastavení (⚙️) → Soukromí a zabezpečení → Cookies a data stránek → "Spravovat data..." → vyhledejte "localhost" → "Odstranit vybrané"</li>
+                <li><strong>Zkusit HTTPS:</strong> Spusťte aplikaci přes HTTPS místo HTTP (použijte `npm run dev:https`)</li>
+              </ol>
+            </details>
+          )}
+        </div>
+      )}
     </div>
   );
 }

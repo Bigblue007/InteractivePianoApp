@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Chord, Note } from '@tonaljs/tonal';
 import { getAudioEngine, autoInitializeAudio } from '../AudioInitButton/AudioInitButton';
 import { useAudioStore } from '../../stores/useAudioStore';
@@ -52,6 +52,9 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
   const audioInitialized = useAudioStore((state) => state.initialized);
   const standard = useNotationStore((state) => state.standard);
   const normalizeChord = useNotationStore((state) => state.normalizeChordName);
+  // Uložit normalizeChord do ref, aby se neměnila reference při každém renderu
+  const normalizeChordRef = useRef(normalizeChord);
+  normalizeChordRef.current = normalizeChord;
   
   // Dynamicky generovat labely podle standardu
   const chordTypesWithLabels = useMemo(() => {
@@ -129,11 +132,11 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
   // Zavolat callback při změně akordu
   useEffect(() => {
     const rawChordName = selectedRoot + selectedType;
-    const normalizedChordName = normalizeChord(rawChordName);
+    const normalizedChordName = normalizeChordRef.current(rawChordName);
     if (chordMidiNotes.length > 0 && onChordSelect) {
       onChordSelect(normalizedChordName, chordMidiNotes);
     }
-  }, [selectedRoot, selectedType, chordMidiNotes, onChordSelect, normalizeChord]);
+  }, [selectedRoot, selectedType, chordMidiNotes, onChordSelect]);
 
   // Funkce pro transpozici nahoru
   const transposeUp = () => {

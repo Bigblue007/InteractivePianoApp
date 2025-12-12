@@ -18,6 +18,34 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.1.1] - 2025-12-11
+
+### Přidáno
+- **DX7 Modern elektrické piano** - Nový syntetický nástroj s FM synthesis charakterem
+  - Bright, metallic zvuk s rychlým attackem a vysokým sustainem
+  - Simulace FM synthesis pomocí více oscilátorů (carrier, modulator, harmonické)
+  - High-pass filtr a resonance boost pro charakteristický DX7 sound
+- **Výběr nástrojů** - Možnost přepínání mezi Piano a DX7 Modern v dropdownu
+
+### Změněno
+- **Vylepšený piano zvuk** - Výrazně vylepšená kvalita zvuku akustického piana:
+  - 6 harmonických místo 4 pro bohatší spektrum
+  - Inharmonicity (neharmoničnost strun) pro realističtější zvuk
+  - Velocity-sensitive parametry (attack, decay, sustain, gain)
+  - Exponenciální decay aproximace pro přirozenější pokles
+  - Dynamické low-pass a high-shelf filtry podle velocity a MIDI noty
+  - Delší doba přehrávání pro nižší noty (2-5 sekund)
+- **InstrumentSelector** - Automaticky načítá nástroj při změně výběru
+- **SoundFontEngine** - Podpora syntetických nástrojů (`synthetic:piano`, `synthetic:dx7`)
+
+### Technické detaily
+- **Piano synthesis**: Additive synthesis s 6 harmonickými, inharmonicity factor 0.01%
+- **DX7 synthesis**: FM synthesis simulace s carrier (square), modulator (2.5x freq), harmonické
+- **Filtry**: Dynamické low-pass (3000-8000 Hz) a high-shelf (-3dB) pro piano
+- **Envelope**: Exponenciální decay aproximace pomocí 10 lineárních segmentů (piano), 8 segmentů (DX7)
+
+---
+
 ## [0.1.0] - 2025-12-11
 
 ### Přidáno
