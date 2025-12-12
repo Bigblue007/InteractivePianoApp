@@ -1,0 +1,59 @@
+.piano-keyboard-container {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.piano-keyboard {
+  user-select: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.key {
+  stroke: #333;
+  stroke-width: 1;
+  transition: fill 0.1s ease;
+}
+
+.key.white {
+  fill: #fff;
+}
+
+.key.white.pressed {
+  fill: #9fd3ff;
+}
+
+.key.black {
+  fill: #333;
+}
+
+.key.black.pressed {
+  fill: #3a78b3;
+}
+
+.key.white.highlighted {
+  fill: #ffd700;
+  opacity: 0.6;
+}
+
+.key.white.highlighted.pressed {
+  fill: #9fd3ff;
+  opacity: 1;
+}
+
+.key.black.highlighted {
+  fill: #ffb300;
+  opacity: 0.7;
+}
+
+.key.black.highlighted.pressed {
+  fill: #3a78b3;
+  opacity: 1;
+}
+
+

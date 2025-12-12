@@ -1,0 +1,161 @@
+.chord-selector {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chord-selector h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.235rem;
+  color: rgba(255, 255, 255, 0.87);
+  font-weight: 500;
+}
+
+.chord-selector-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.control-group label {
+  font-size: 1.04rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.root-select,
+.type-select {
+  padding: 0.4rem;
+  background: #2a2a2a;
+  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-size: 1.17rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.root-select:hover,
+.type-select:hover {
+  background: #333;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.root-select:focus,
+.type-select:focus {
+  outline: none;
+  border-color: rgba(100, 150, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(100, 150, 255, 0.2);
+}
+
+.root-select option,
+.type-select option {
+  background: #2a2a2a;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.selected-chord-display {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chord-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.chord-name-display {
+  font-size: 1.56rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  flex: 1;
+}
+
+.transpose-button {
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  min-width: 2rem;
+}
+
+.transpose-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.transpose-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.chord-notes-info {
+  font-size: 1.105rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.octave-offset {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.play-chord-button {
+  padding: 0.5rem 1rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.17rem;
+  font-weight: 500;
+  transition: all 0.1s ease;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.play-chord-button:active:not(:disabled) {
+  background: #3d8b40;
+  transform: scale(0.98);
+}
+
+.play-chord-button:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.play-chord-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
