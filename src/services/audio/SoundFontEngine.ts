@@ -246,7 +246,6 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
     const attackTime = 0.001 + (vel * 0.004); // 1-5ms attack (velmi rychlý)
     const decayTime = 0.05 + (vel * 0.15); // 50-200ms decay
     const sustainLevel = 0.6 + (vel * 0.3); // 60-90% sustain (vysoký)
-    const releaseTime = 0.2 + (vel * 0.3); // 200-500ms release
     
     // Vytvořit mixer gain node
     const mixerGain = this.audioContext.createGain();
@@ -264,8 +263,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       mixerGain,
       attackTime,
       decayTime,
-      sustainLevel,
-      releaseTime
+      sustainLevel
     );
     oscillators.push(carrier.oscillator);
     gainNodes.push(carrier.gainNode);
@@ -280,8 +278,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       mixerGain,
       attackTime * 0.8,
       decayTime * 1.2,
-      sustainLevel * 0.9,
-      releaseTime
+      sustainLevel * 0.9
     );
     oscillators.push(modulator.oscillator);
     gainNodes.push(modulator.gainNode);
@@ -295,8 +292,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       mixerGain,
       attackTime * 1.2,
       decayTime * 0.9,
-      sustainLevel * 0.7,
-      releaseTime
+      sustainLevel * 0.7
     );
     oscillators.push(harmonic.oscillator);
     gainNodes.push(harmonic.gainNode);
@@ -310,8 +306,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       mixerGain,
       attackTime * 1.5,
       decayTime * 0.7,
-      sustainLevel * 0.5,
-      releaseTime
+      sustainLevel * 0.5
     );
     oscillators.push(bright.oscillator);
     gainNodes.push(bright.gainNode);
@@ -363,8 +358,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
     output: GainNode,
     attackTime: number,
     decayTime: number,
-    sustainLevel: number,
-    releaseTime: number
+    sustainLevel: number
   ): { oscillator: OscillatorNode; gainNode: GainNode } {
     const oscillator = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
