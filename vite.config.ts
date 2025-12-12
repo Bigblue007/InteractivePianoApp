@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 3000,
     // Pro MIDI API: localhost funguje bez HTTPS, ale některé prohlížeče mohou vyžadovat HTTPS
-    // Pro spuštění s HTTPS použijte: npm run dev -- --https
+    // Pro spuštění s HTTPS použijte: npm run dev:https
     https: false
   }
 })

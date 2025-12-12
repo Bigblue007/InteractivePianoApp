@@ -38,8 +38,18 @@ Aplikace poběží na `http://localhost:3000`
 **Poznámka k MIDI:** Pro připojení MIDI zařízení doporučujeme použít **Chrome** nebo **Edge**. Firefox má omezenou podporu a vyžaduje add-on. Pokud máte problémy s MIDI, zkuste spustit dev server s HTTPS:
 
 ```bash
-npm run dev -- --https
+npm run dev:https
 ```
+
+## Vytváření Release
+
+Pro vytvoření nového release použijte automatický script:
+
+```bash
+npm run release
+```
+
+Script automaticky commitne změny, pushne na GitHub a vytvoří tag. Více informací v [docs/VERSIONING.md](docs/VERSIONING.md).
 
 ## Použití
 
@@ -93,7 +103,9 @@ Pro přidání dalších soundfontů:
 ## Dokumentace
 
 - **[CHANGELOG.md](docs/CHANGELOG.md)** - Podrobný seznam všech změn, oprav a řešených problémů
+- **[VERSIONING.md](docs/VERSIONING.md)** - Návod na verzování a vytváření releases
 - **[IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md)** - Plán implementace a aktuální stav projektu
+- **[TODO.md](docs/TODO.md)** - Seznam plánovaných funkcí a úkolů
 - **[interactive-piano-def.md](docs/interactive-piano-def.md)** - Původní technický průvodce projektu
 
 ## Budoucí rozšíření
