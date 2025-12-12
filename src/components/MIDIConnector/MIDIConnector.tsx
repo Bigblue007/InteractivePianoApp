@@ -49,7 +49,7 @@ export function MIDIConnector() {
       const inputsList = midiInputs.map((input) => ({
         id: input.id,
         name: input.name || 'Neznámé zařízení',
-        manufacturer: input.manufacturer,
+        manufacturer: input.manufacturer ?? undefined,
         state: input.state as 'connected' | 'disconnected',
       }));
       

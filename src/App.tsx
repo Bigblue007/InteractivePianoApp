@@ -18,7 +18,7 @@ function App() {
   const activeNotes = usePianoStore((state) => state.activeNotes);
   const audioInitialized = useAudioStore((state) => state.initialized);
 
-  const handleChordSelect = (chordName: string, midiNotes: number[]) => {
+  const handleChordSelect = (_chordName: string, midiNotes: number[]) => {
     setSelectedChordNotes(new Set(midiNotes));
   };
 

@@ -1,4 +1,4 @@
-import { Renderer, Stave, StaveNote, Voice, Formatter, Accidental, Annotation } from 'vexflow';
+import { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } from 'vexflow';
 
 export class ScoreRenderer {
   private renderer: Renderer | null = null;
@@ -17,7 +17,7 @@ export class ScoreRenderer {
     container.innerHTML = '';
 
     this.container = container;
-    this.renderer = new Renderer(container, Renderer.Backends.SVG);
+    this.renderer = new Renderer(container as HTMLDivElement, Renderer.Backends.SVG);
     // Výška bude upravena podle počtu klíčů v renderNotes
     this.renderer.resize(700, 300);
   }

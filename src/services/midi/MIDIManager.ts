@@ -107,7 +107,7 @@ export class MIDIManager {
     // Sledovat změny stavu zařízení (pro případ, že se zařízení připojí později)
     this.access.onstatechange = (event) => {
       const port = event.port;
-      if (port.type === 'input' && port.state === 'connected') {
+      if (port && port.type === 'input' && port.state === 'connected') {
         console.log('Nové MIDI zařízení připojeno:', port.name);
         // Listener se připojí až při výběru vstupu
       }
@@ -128,6 +128,7 @@ export class MIDIManager {
    * Zpracuje MIDI zprávu
    */
   private handleMIDIMessage(event: MIDIMessageEvent): void {
+    if (!event.data) return;
     const [status, data1, data2] = event.data;
     const command = status & 0xf0;
     const channel = status & 0x0f;

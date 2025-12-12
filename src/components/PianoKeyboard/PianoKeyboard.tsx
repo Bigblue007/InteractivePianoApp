@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { usePianoStore } from '../../stores/usePianoStore';
 import { useAudioStore } from '../../stores/useAudioStore';
 import { autoInitializeAudio } from '../AudioInitButton/AudioInitButton';
-import { isBlackKey, getWhiteKeyIndex } from '../../utils/notes';
+import { isBlackKey } from '../../utils/notes';
 import './PianoKeyboard.css';
 
 interface PianoKeyboardProps {
@@ -155,7 +155,7 @@ export function PianoKeyboard({
   const handlePointerUp = (e: React.PointerEvent) => {
     e.preventDefault();
     const midi = activePointers.current.get(e.pointerId);
-    if (midi !== null) {
+    if (midi !== null && midi !== undefined) {
       activePointers.current.delete(e.pointerId);
       onNoteOff?.(midi);
       usePianoStore.getState().noteOff(midi);
@@ -267,7 +267,7 @@ export function PianoKeyboard({
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerMove={handlePointerMove}
-        onPointerLeave={(e) => {
+        onPointerLeave={(_e) => {
           // Zastavit všechny aktivní pointery při opuštění
           activePointers.current.forEach((midi) => {
             onNoteOff?.(midi);

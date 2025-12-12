@@ -11,7 +11,8 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
   private voices: Map<number, AudioVoice> = new Map();
   private activeOscillators: Map<number, OscillatorNode[]> = new Map();
   private activeGainNodes: Map<number, GainNode[]> = new Map();
-  private activeTimeouts: Map<number, NodeJS.Timeout> = new Map();
+  private activeTimeouts: Map<number, ReturnType<typeof setTimeout>> = new Map();
+  // @ts-expect-error - Připraveno pro budoucí použití s TinySoundFont WASM
   private soundFontData: ArrayBuffer | null = null;
   private loaded: boolean = false;
   private sustain: boolean = false;
