@@ -39,6 +39,13 @@ header {
   filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
 }
 
+.app-header-inline .app-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
 .app-header-inline h1 {
   font-size: 3.6rem; /* Zvětšeno 2x (z 1.8rem) */
   margin: 0;
@@ -46,6 +53,15 @@ header {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1.2;
+}
+
+.app-header-inline .app-demo-version {
+  font-size: 1rem;
+  color: #888;
+  margin-top: -0.2rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 .logo {

@@ -51,8 +51,16 @@
 .welcome-dialog h2 {
   color: #ffffff;
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
   font-weight: 600;
+}
+
+.welcome-demo-version {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 .welcome-dialog p {

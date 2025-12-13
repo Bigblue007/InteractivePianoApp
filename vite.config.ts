@@ -4,6 +4,10 @@ import mkcert from 'vite-plugin-mkcert'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
+// Načíst verzi z package.json
+const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
+const appVersion = packageJson.version
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   // Zkontrolovat, zda má být použit HTTPS (z environment variable nebo mode)
@@ -13,6 +17,10 @@ export default defineConfig(({ command, mode }) => {
     // Base path pro GitHub Pages (pokud bude aplikace na /InteractivePianoApp/)
     // Pro produkci na vlastní doméně nebo Vercel/Netlify nastavit na '/'
     base: process.env.VITE_BASE_PATH || '/',
+    define: {
+      // Vložit verzi jako konstantu dostupnou v kódu
+      '__APP_VERSION__': JSON.stringify(appVersion),
+    },
     plugins: [
       react(),
       ...(useHttps ? [mkcert()] : []), // Přidat mkcert plugin pouze pro HTTPS
