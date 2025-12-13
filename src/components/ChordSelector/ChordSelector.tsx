@@ -177,30 +177,80 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
     // Limit -3 oktávy
     if (newOffset < -3) return;
     
-    // Vypočítat nové noty s novou transpozicí
+    // Vypočítat nové noty s novou transpozicí (stejná logika jako v chordMidiNotes)
     const baseOctave = DEFAULT_OCTAVE + newOffset;
     const chord = Chord.get(selectedRoot + selectedType);
     if (!chord.notes || chord.notes.length === 0) return;
     
     const testNotes: number[] = [];
-    for (const pitchClass of chord.notes) {
-      for (let offset = -1; offset <= 1; offset++) {
-        const testOctave = baseOctave + offset;
-        try {
-          const note = Note.get(`${pitchClass}${testOctave}`);
-          if (note.midi !== null) {
+    const pitchClasses = chord.notes;
+    
+    // Použít stejnou logiku jako v chordMidiNotes
+    for (let i = 0; i < pitchClasses.length; i++) {
+      const pitchClass = pitchClasses[i];
+      try {
+        if (i === 0) {
+          // Root note - použít přesně baseOctave
+          const note = Note.get(`${pitchClass}${baseOctave}`);
+          if (note.midi !== null && note.midi >= MIN_MIDI && note.midi <= MAX_MIDI) {
             testNotes.push(note.midi);
-            break;
           }
-        } catch {
-          // Ignorovat chyby
+        } else {
+          // Ostatní noty - zkusit najít v různých oktávách, preferovat vyšší
+          // Zkusit offset 0, +1, -1 (preferovat stejnou nebo vyšší oktávu)
+          let found = false;
+          for (let offset of [0, 1, -1]) {
+            const testOctave = baseOctave + offset;
+            try {
+              const note = Note.get(`${pitchClass}${testOctave}`);
+              if (note.midi !== null) {
+                const transposedMidi = note.midi;
+                // Zajistit, zda noty jsou v rozsahu klaviatury
+                if (transposedMidi >= MIN_MIDI && transposedMidi <= MAX_MIDI) {
+                  testNotes.push(transposedMidi);
+                  found = true;
+                  break;
+                }
+              }
+            } catch {
+              // Ignorovat chyby
+            }
+          }
+          // Pokud se nenašla žádná nota v rozsahu, zkusit ještě nižší oktávy
+          if (!found) {
+            for (let offset of [-2, -3]) {
+              const testOctave = baseOctave + offset;
+              try {
+                const note = Note.get(`${pitchClass}${testOctave}`);
+                if (note.midi !== null) {
+                  const transposedMidi = note.midi;
+                  if (transposedMidi >= MIN_MIDI && transposedMidi <= MAX_MIDI) {
+                    testNotes.push(transposedMidi);
+                    found = true;
+                    break;
+                  }
+                }
+              } catch {
+                // Ignorovat chyby
+              }
+            }
+          }
         }
+      } catch {
+        // Ignorovat chyby
       }
     }
     
-    // Zkontrolovat, zda všechny noty jsou v rozsahu
-    if (testNotes.length > 0 && testNotes.every(n => n >= MIN_MIDI && n <= MAX_MIDI)) {
-      setOctaveOffset(newOffset);
+    // Zkontrolovat, zda root note je v rozsahu (to je minimum pro transpozici)
+    // Pokud root note není v rozsahu, transpozice není možná
+    // Ostatní noty mohou být mimo rozsah - v chordMidiNotes se stejně použijí jen ty v rozsahu
+    if (testNotes.length > 0) {
+      const rootNote = testNotes[0]; // První nota je root note
+      if (rootNote >= MIN_MIDI && rootNote <= MAX_MIDI) {
+        // Root note je v rozsahu, povolit transpozici
+        // (ostatní noty mimo rozsah se v chordMidiNotes stejně nepoužijí)
+        setOctaveOffset(newOffset);
+      }
     }
   };
 
@@ -267,8 +317,30 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
     // Jinak použít standardní normalizaci
     return normalizeChord(rawChordName);
   }, [selectedRoot, selectedType, standard, normalizeChord]);
+  // Kontrola možnosti transpozice nahoru/dolů
+  // Pro dolů: zkontrolovat, zda root note při novém offsetu (-1) bude v rozsahu
   const canTransposeUp = chordMidiNotes.length > 0 && octaveOffset < 3;
-  const canTransposeDown = chordMidiNotes.length > 0 && octaveOffset > -3;
+  
+  // Pro dolů: zkontrolovat, zda root note při offsetu -3 bude v rozsahu
+  let canTransposeDown = false;
+  if (chordMidiNotes.length > 0 && octaveOffset > -3) {
+    // Zkontrolovat, zda root note při novém offsetu (octaveOffset - 1) bude v rozsahu
+    const testOffset = octaveOffset - 1;
+    const testBaseOctave = DEFAULT_OCTAVE + testOffset;
+    try {
+      const chord = Chord.get(selectedRoot + selectedType);
+      if (chord.notes && chord.notes.length > 0) {
+        const rootPitchClass = chord.notes[0];
+        const rootNote = Note.get(`${rootPitchClass}${testBaseOctave}`);
+        if (rootNote.midi !== null && rootNote.midi >= MIN_MIDI && rootNote.midi <= MAX_MIDI) {
+          canTransposeDown = true;
+        }
+      }
+    } catch {
+      // Pokud selže kontrola, použít původní logiku
+      canTransposeDown = chordMidiNotes.length > 0;
+    }
+  }
 
   return (
     <div className="chord-selector">
@@ -321,7 +393,7 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
             disabled={!canTransposeDown}
             title="Transponovat o oktávu dolů"
           >
-            ↓
+            - oct.
           </button>
           <div className="chord-name-display">{currentChordName}</div>
           <button
@@ -330,17 +402,12 @@ export function ChordSelector({ onChordSelect }: ChordSelectorProps) {
             disabled={!canTransposeUp}
             title="Transponovat o oktávu nahoru"
           >
-            ↑
+            + oct.
           </button>
         </div>
         {chordMidiNotes.length > 0 && (
           <div className="chord-notes-info">
             {getNotesText(chordMidiNotes.length)}
-            {octaveOffset !== 0 && (
-              <span className="octave-offset">
-                {octaveOffset > 0 ? '+' : ''}{octaveOffset} oktáva
-              </span>
-            )}
           </div>
         )}
         <button

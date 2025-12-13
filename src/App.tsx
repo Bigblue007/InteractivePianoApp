@@ -44,26 +44,26 @@ function App() {
       {showWelcomeDialog && (
         <WelcomeDialog onClose={() => setShowWelcomeDialog(false)} />
       )}
-      <header>
-        <div className="header-content">
-          <div className="logo">♫</div>
-          <h1>Harmonia</h1>
-        </div>
-      </header>
       <main>
-        <div className="top-section">
-          <div className="left-panel top-panel">
-            <ChordPanel />
+        <div className="top-section-wrapper">
+          <div className="app-header-inline">
+            <div className="logo">♫</div>
+            <h1>Harmonia</h1>
           </div>
-          <div className="center-panel top-panel">
-            <div className="controls">
-              <InstrumentSelector />
-              <MIDIConnector />
-              <NotationSelector />
+          <div className="top-section">
+            <div className="left-panel top-panel">
+              <div className="controls">
+                <InstrumentSelector />
+                <MIDIConnector />
+                <NotationSelector />
+              </div>
             </div>
-          </div>
-          <div className="right-panel top-panel">
-            <ChordSelector onChordSelect={handleChordSelect} />
+            <div className="center-panel top-panel">
+              <ChordPanel />
+            </div>
+            <div className="right-panel top-panel">
+              <ChordSelector onChordSelect={handleChordSelect} />
+            </div>
           </div>
         </div>
         

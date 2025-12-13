@@ -18,6 +18,43 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.2.1] - 2025-12-13
+
+### Přidáno
+- **Loading indikátor pro načítání samplů** - Vizuální feedback při načítání akustického piana
+  - Animovaný spinner s textem "Načítání samplů..."
+  - Gradient pozadí s modrým odstínem
+  - Fade-in animace při zobrazení
+  - Dropdown je disabled během načítání pro lepší UX
+
+### Změněno
+- **Pořadí nástrojů v dropdownu** - Syntetické nástroje nahoře, akustické piano dole
+  - DX7 Modern (synth) - první
+  - Piano (synth) - druhý
+  - Piano (Acoustic) - poslední
+- **Označení syntetických nástrojů** - Přidáno "(synth)" k syntetickým nástrojům pro lepší rozlišení
+  - `DX7 Modern` → `DX7 Modern (synth)`
+  - `Piano` → `Piano (synth)`
+- **InstrumentSelector** - Vylepšené UX s loading indikátorem a explicitním řazením nástrojů
+- **UI layout** - Přepracování layoutu horních panelů:
+  - Prohození levého a prostředního panelu (dropdowny vlevo, detekovaný akord uprostřed)
+  - Prostřední sekce s detekovaným akordem má poloviční výšku
+  - Název aplikace přesunut nad prostřední sekci s větší velikostí (2x)
+  - Tlačítka transpozice akordů změněna z šipek na text ("+ oct." / "- oct.")
+  - MIDI tlačítko zarovnáno s dropdowny
+- **Zvýraznění kláves** - Sjednocení barvy zvýraznění pro bílé i černé klávesy (zlatá barva)
+- **Padding a mezery** - Snížení paddingů a mezer pro kompaktnější layout
+
+### Opraveno
+- **Transpozice akordů** - Opraven limit pro transpozici dolů na -3 oktávy (bylo -2)
+- **Zobrazení offsetu oktávy** - Odstraněno zobrazení offsetu, tlačítka mají text "+ oct." / "- oct."
+- **Zvýraznění černých kláves** - Opraveno prosvítání černé čáry z bílé klávesy při zvýraznění
+- **Velikost MIDI připojení** - Fixní výška pro konzistentní velikost před i po připojení
+- **Propisování stínu** - Opraveno propisování stínu a backdrop-filter z horních panelů do spodního okna
+- **Velikost okna detekovaného akordu** - Snížena na polovinu s zarovnáním na spodní okraj
+
+---
+
 ## [0.2.0] - 2025-12-13
 
 ### Přidáno

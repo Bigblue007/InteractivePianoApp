@@ -37,8 +37,7 @@
 }
 
 .key.white.highlighted {
-  fill: #ffd700;
-  opacity: 0.6;
+  fill: rgba(255, 215, 0, 0.9); /* Zlatá barva s opacity 0.9 */
 }
 
 .key.white.highlighted.pressed {
@@ -47,13 +46,18 @@
 }
 
 .key.black.highlighted {
-  fill: #ffb300;
-  opacity: 0.7;
+  fill: rgba(255, 215, 0, 1); /* Stejná zlatá barva s opacity 1 */
+  stroke: #333; /* Černý okraj */
+  stroke-width: 2; /* Tenčí stroke */
+  paint-order: stroke fill; /* Nejdřív stroke, pak fill - aby stroke zakryl čáru */
 }
 
 .key.black.highlighted.pressed {
   fill: #3a78b3;
   opacity: 1;
+  stroke: #333; /* Černý okraj */
+  stroke-width: 2; /* Tenčí stroke */
+  paint-order: stroke fill; /* Nejdřív stroke, pak fill */
 }
 
 

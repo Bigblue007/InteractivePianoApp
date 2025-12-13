@@ -6,6 +6,7 @@ interface AudioState {
   selectedSoundFontId: string | null;
   audioContext: AudioContext | null;
   initialized: boolean;
+  loadingSoundFontId: string | null; // ID nástroje, který se právě načítá
 
   // Actions
   addSoundFont: (info: SoundFontInfo) => void;
@@ -13,6 +14,7 @@ interface AudioState {
   setAudioContext: (context: AudioContext | null) => void;
   setInitialized: (initialized: boolean) => void;
   markSoundFontLoaded: (id: string, loaded: boolean) => void;
+  setLoadingSoundFont: (id: string | null) => void;
 }
 
 export const useAudioStore = create<AudioState>((set) => ({
@@ -20,6 +22,7 @@ export const useAudioStore = create<AudioState>((set) => ({
   selectedSoundFontId: null,
   audioContext: null,
   initialized: false,
+  loadingSoundFontId: null,
 
   addSoundFont: (info: SoundFontInfo) => {
     set((state) => {
@@ -52,6 +55,10 @@ export const useAudioStore = create<AudioState>((set) => ({
         sf.id === id ? { ...sf, loaded } : sf
       ),
     }));
+  },
+
+  setLoadingSoundFont: (id: string | null) => {
+    set({ loadingSoundFontId: id });
   },
 }));
 
