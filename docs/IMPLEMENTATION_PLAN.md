@@ -1,7 +1,7 @@
 # Plán implementace - Interaktivní webová klaviatura
 
 *Datum vytvoření: 11. 12. 2025*  
-*Poslední aktualizace: 11. 12. 2025*
+*Poslední aktualizace: 13. 12. 2025*
 
 ## Přehled
 
@@ -481,8 +481,19 @@ Aplikace je připravena na rozšíření o další funkce, jako je knihovna pís
 - **Zarovnání**: Všechny labely mají stejnou šířku (110px) a zarovnání vpravo
 - **Velikost**: Všechny selecty mají stejnou velikost písma, padding a minimální šířku
 
+### Knihovna písniček (13. 12. 2025) - Release 0.3.0
+- **SongLibrary komponenta** - Kompletní implementace knihovny písniček v pravém panelu pod klaviaturou
+- **Vyhledávání** - Real-time vyhledávání podle názvu a interpreta (case-insensitive)
+- **Chord Progression** - Zobrazení akordů s podporou sekcí (verse, chorus, bridge, intro, outro)
+- **Interaktivní akordy** - Klikatelné akordy s přehráváním při držení tlačítka myši
+- **Integrace** - Zobrazení akordů na klaviatuře (zvýraznění) a v notové osnově při kliknutí
+- **20 předpřipravených písní** - Populární písně různých žánrů s chord progression
+- **Sekce** - Strukturované zobrazení s hlavičkami (Sloka, Refrén, Bridge, Intro, Outro)
+- **Horizontální layout** - Akordy zobrazeny jako tlačítka vedle sebe
+- **Kompaktní design** - Optimalizováno pro zobrazení bez scrollování
+
 ---
 
 *Dokument vytvořen: 11. 12. 2025*  
-*Poslední aktualizace: 11. 12. 2025*
+*Poslední aktualizace: 13. 12. 2025*
 
