@@ -1,7 +1,7 @@
 {
   "name": "harmonia",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "release": "powershell -ExecutionPolicy Bypass -File ./scripts/release.ps1"
+    "release": "powershell -ExecutionPolicy Bypass -File ./scripts/release.ps1",
+    "trim-samples": "powershell -ExecutionPolicy Bypass -File ./scripts/trim-samples.ps1"
   },
   "dependencies": {
     "@tonaljs/tonal": "^4.10.0",

@@ -12,6 +12,9 @@ export interface AudioVoice {
   sourceNode: AudioBufferSourceNode | null;
 }
 
+// Re-export types from instrumentPresets for convenience
+export type { InstrumentPreset, SampleConfig, VelocityLayer, InstrumentType } from '../../config/instrumentPresets';
+
 
 
 

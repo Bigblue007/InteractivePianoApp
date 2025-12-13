@@ -13,13 +13,24 @@ export function InstrumentSelector() {
 
   // Přidat výchozí nástroje při mount
   useEffect(() => {
-    // Zkontrolovat, zda už existuje piano
+    // Zkontrolovat, zda už existuje piano (synthetic)
     const pianoExists = soundfonts.some((sf) => sf.id === 'piano');
     if (!pianoExists) {
       addSoundFont({
         id: 'piano',
         name: 'Piano',
         url: 'synthetic:piano',
+        loaded: false,
+      });
+    }
+    
+    // Zkontrolovat, zda už existuje piano-acoustic (sampler)
+    const pianoAcousticExists = soundfonts.some((sf) => sf.id === 'piano-acoustic');
+    if (!pianoAcousticExists) {
+      addSoundFont({
+        id: 'piano-acoustic',
+        name: 'Piano (Acoustic)',
+        url: 'preset:piano-acoustic',
         loaded: false,
       });
     }
@@ -45,6 +56,13 @@ export function InstrumentSelector() {
 
     const selectedSoundFont = soundfonts.find((sf) => sf.id === selectedSoundFontId);
     if (selectedSoundFont && !selectedSoundFont.loaded) {
+      // Označit všechny ostatní nástroje jako nenačtené
+      soundfonts.forEach((sf) => {
+        if (sf.id !== selectedSoundFontId && sf.loaded) {
+          markSoundFontLoaded(sf.id, false);
+        }
+      });
+      
       audioEngine.loadSoundFont(selectedSoundFont.url)
         .then(() => {
           markSoundFontLoaded(selectedSoundFont.id, true);
@@ -56,6 +74,11 @@ export function InstrumentSelector() {
   }, [selectedSoundFontId, audioInitialized, soundfonts, markSoundFontLoaded]);
 
   const handleSelect = async (id: string) => {
+    // Označit předchozí nástroj jako nenačtený
+    if (selectedSoundFontId) {
+      markSoundFontLoaded(selectedSoundFontId, false);
+    }
+    
     selectSoundFont(id);
     
     // Pokud je audio inicializováno, načíst nástroj okamžitě
@@ -87,7 +110,7 @@ export function InstrumentSelector() {
       >
         {soundfonts.map((sf) => (
           <option key={sf.id} value={sf.id}>
-            {sf.name} {sf.loaded ? '✓' : ''}
+            {sf.name} {sf.id === selectedSoundFontId && sf.loaded ? '✓' : ''}
           </option>
         ))}
       </select>

@@ -1,5 +1,7 @@
 import { AudioContextManager } from './AudioContextManager';
 import { SoundFontEngine, AudioVoice } from './types';
+import { SimpleSampler } from './SimpleSampler';
+import { getPreset } from '../../config/instrumentPresets';
 
 /**
  * Engine pro přehrávání sf2 soundfontů
@@ -20,6 +22,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
   private sustain: boolean = false;
   private sustainPool: Set<number> = new Set();
   private instrumentType: InstrumentType = 'piano'; // Výchozí typ nástroje
+  private sampler: SimpleSampler | null = null; // Sampler pro sampler-based nástroje
 
   constructor() {
     this.audioContext = AudioContextManager.getContext();
@@ -35,8 +38,40 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
    */
   async loadSoundFont(url: string): Promise<void> {
     try {
+      // Zkontrolovat, zda je to sampler preset (preset:piano-acoustic)
+      if (url.startsWith('preset:')) {
+        const presetId = url.replace('preset:', '');
+        const preset = getPreset(presetId);
+        
+        if (!preset) {
+          throw new Error(`Preset ${presetId} nebyl nalezen`);
+        }
+        
+        if (preset.type !== 'sampler') {
+          throw new Error(`Preset ${presetId} není typu sampler`);
+        }
+        
+        // Vytvořit nebo použít existující sampler
+        if (!this.sampler) {
+          this.sampler = new SimpleSampler();
+        }
+        
+        // Načíst preset do samplera
+        await this.sampler.loadPreset(preset);
+        this.instrumentType = 'piano'; // Default pro sampler
+        this.loaded = true;
+        console.log(`Sampler preset načten: ${preset.name}`);
+        return;
+      }
+      
       // Zkontrolovat, zda je to syntetický nástroj (ne skutečný soundfont)
       if (url === 'synthetic:piano' || url === 'synthetic:dx7') {
+        // Zastavit sampler, pokud běží
+        if (this.sampler) {
+          this.sampler.dispose();
+          this.sampler = null;
+        }
+        
         this.instrumentType = url === 'synthetic:piano' ? 'piano' : 'dx7';
         this.loaded = true;
         console.log(`Syntetický nástroj načten: ${this.instrumentType}`);
@@ -44,6 +79,12 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       }
       
       // Načíst skutečný soundfont (pokud by se někdy použil)
+      // Zastavit sampler, pokud běží
+      if (this.sampler) {
+        this.sampler.dispose();
+        this.sampler = null;
+      }
+      
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Nepodařilo se načíst soundfont: ${response.statusText}`);
@@ -67,6 +108,13 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       return;
     }
 
+    // Pokud je sampler načten, použít sampler
+    if (this.sampler) {
+      this.sampler.noteOn(midi, velocity);
+      return;
+    }
+
+    // Jinak použít syntetický engine
     // Zastavit existující notu na stejném MIDI čísle (okamžitě)
     this.stopNoteImmediately(midi);
 
@@ -485,6 +533,13 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
    * Zastaví notu (s podporou sustain pedálu)
    */
   noteOff(midi: number): void {
+    // Pokud je sampler načten, použít sampler
+    if (this.sampler) {
+      this.sampler.noteOff(midi);
+      return;
+    }
+
+    // Jinak použít syntetický engine
     if (this.sustain) {
       this.sustainPool.add(midi);
       return;
@@ -498,6 +553,13 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
    * Nastaví sustain pedál
    */
   setSustain(sustain: boolean): void {
+    // Pokud je sampler načten, použít sampler
+    if (this.sampler) {
+      this.sampler.setSustain(sustain);
+      return;
+    }
+
+    // Jinak použít syntetický engine
     this.sustain = sustain;
     if (!sustain) {
       // Uvolnit všechny noty ze sustain poolu - okamžitě zastavit
@@ -512,6 +574,12 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
    * Zavře engine a uvolní zdroje
    */
   dispose(): void {
+    // Zastavit sampler, pokud běží
+    if (this.sampler) {
+      this.sampler.dispose();
+      this.sampler = null;
+    }
+
     // Zastavit všechny noty okamžitě
     const allMidiNotes = Array.from(this.voices.keys());
     for (const midi of allMidiNotes) {

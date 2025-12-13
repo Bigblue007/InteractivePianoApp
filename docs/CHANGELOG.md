@@ -18,6 +18,46 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.2.0] - 2025-12-13
+
+### Přidáno
+- **Sample-based akustické piano** - Nový sampler engine s podporou skutečných audio samplů
+  - Podpora TKI samplů s Round Robin (RR1, RR2, RR3) pro variaci
+  - Velocity layers (Level1 pro soft, Level2 pro hard údery)
+  - Release Trigger samply pro přirozený konec tónů
+  - Pedal samply (PD/PU) pro sustain pedál
+  - Automatické ořezání pauzy na začátku samplů pro eliminaci latence
+  - Podpora všech existujících samplů (24 not, ~214 samplů celkem)
+- **SampleLoader** - Singleton třída pro načítání a cachování audio samplů
+- **SimpleSampler** - Sampler engine s podporou pitch shifting, Round Robin a Release Trigger
+- **Automatické ořezání pauzy** - Eliminuje ticho na začátku samplů pro okamžitý start
+- **Script pro ořezání samplů** - `npm run trim-samples` pro optimalizaci délky samplů
+
+### Změněno
+- **SoundFontEngine** - Refaktorován na dispatcher pro syntetické nástroje a sampler
+- **InstrumentPreset** - Nová struktura pro sampler-based nástroje s konfigurací samplů
+- **Vite middleware** - Vylepšené servování MP3 souborů s '#' v názvech
+- **URL encoding** - Explicitní kódování '#' jako '%23' pro správné načítání samplů
+- **MIDI mapping** - Opraven offset pro správné mapování samplů (samply jsou označené o oktávu níž)
+
+### Opraveno
+- **Latence samplů** - Vypnuto lookahead scheduling pro okamžité přehrávání
+- **Loopování samplů** - Vypnuto pro přirozené přehrávání dlouhých samplů
+- **Ořezání pauzy** - Automatické ořezání ticha na začátku samplů
+- **UI bug** - Opraveno zobrazení "loaded" checkmarku při výběru nástrojů
+- **MP3 dekódování** - Vylepšené error handling a retry mechanismus
+- **MIME types** - Správné servování MP3 souborů s Content-Type: audio/mpeg
+- **Pitch mapping** - Opraven offset +12 pro správné mapování samplů na MIDI noty
+
+### Technické detaily
+- **Sample format**: TKI_{Note}{Octave}_{Type}_{RR}.mp3
+- **Round Robin**: Cyklické střídání RR1, RR2, RR3 pro každou notu
+- **Pitch shifting**: Max ±2.5 oktávy pomocí playbackRate
+- **Automatic silence trimming**: Detekce a ořezání ticha na začátku samplů
+- **Sample caching**: Všechny samply jsou cachované v paměti pro rychlý přístup
+
+---
+
 ## [0.1.1] - 2025-12-11
 
 ### Přidáno
