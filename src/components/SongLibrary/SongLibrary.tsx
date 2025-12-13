@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSongLibraryStore } from '../../stores/useSongLibraryStore';
 import { SearchBar } from './SearchBar';
 import { SongList } from './SongList';

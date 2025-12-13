@@ -24,9 +24,6 @@ export function ChordProgression({
 }: ChordProgressionProps) {
   // Podpora pro starý formát (chords array) - backward compatibility
   const useSections = sections && sections.length > 0;
-  const flatChords = useSections 
-    ? sections.flatMap(section => section.chords)
-    : (chords || []);
 
   if (!useSections && (!chords || chords.length === 0)) {
     return (
@@ -56,7 +53,6 @@ export function ChordProgression({
     return (
       <div className="chord-progression-sections">
         {sections.map((section, sectionIndex) => {
-          const sectionStartIndex = globalChordIndex;
           const sectionChords = section.chords.map((chord, chordIndexInSection) => {
             const currentGlobalIndex = globalChordIndex++;
             const isSelected = selectedSectionIndex === sectionIndex && 
@@ -107,8 +103,6 @@ export function ChordProgression({
               </div>
             );
           });
-
-          const sectionLabel = section.label || getSectionLabel(section.type, sectionIndex);
           
           return (
             <div key={sectionIndex} className="chord-section">
