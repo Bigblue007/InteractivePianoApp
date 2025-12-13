@@ -14,6 +14,7 @@ import { useAudioStore } from './stores/useAudioStore';
 import { useSongLibraryStore } from './stores/useSongLibraryStore';
 import { getAudioEngine, autoInitializeAudio } from './components/AudioInitButton/AudioInitButton';
 import { chordToMidiNotes } from './utils/chordUtils';
+import { APP_NAME_WITH_VERSION } from './config/version';
 import './App.css';
 
 function App() {
@@ -147,7 +148,7 @@ function App() {
         <div className="top-section-wrapper">
           <div className="app-header-inline">
             <div className="logo">♫</div>
-            <h1>Harmonia</h1>
+            <h1>{APP_NAME_WITH_VERSION}</h1>
           </div>
           <div className="top-section">
             <div className="left-panel top-panel">

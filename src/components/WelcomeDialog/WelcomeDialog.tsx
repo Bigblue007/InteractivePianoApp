@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAudioStore } from '../../stores/useAudioStore';
 import { autoInitializeAudio } from '../AudioInitButton/AudioInitButton';
+import { APP_NAME_WITH_VERSION } from '../../config/version';
 import './WelcomeDialog.css';
 
 interface WelcomeDialogProps {
@@ -43,7 +44,7 @@ export function WelcomeDialog({ onClose }: WelcomeDialogProps) {
   return (
     <div className="welcome-dialog-overlay">
       <div className="welcome-dialog">
-        <h2>Vítejte v Harmonia</h2>
+        <h2>Vítejte v {APP_NAME_WITH_VERSION}</h2>
         <p>Pro začátek klikněte na tlačítko PLAY a inicializujte zvuk.</p>
         <button 
           className="welcome-play-button" 
