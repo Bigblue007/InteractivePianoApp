@@ -122,6 +122,19 @@ Viz [docs/TODO.md](docs/TODO.md) pro detailní seznam plánovaných funkcí.
 
 ## Licence
 
-Viz soubory soundfontů pro jejich licenční podmínky.
+Tento projekt je licencován pod [MIT License](LICENSE).
+
+### Třetí strany
+
+Projekt používá následující open-source knihovny:
+- **React** - MIT License
+- **@tonaljs/tonal** - MIT License
+- **VexFlow** - MIT License
+- **Zustand** - MIT License
+- **TypeScript** - Apache License 2.0
+- **Vite** - MIT License
+- A další (viz [LICENSE](LICENSE) pro kompletní seznam)
+
+Soundfont soubory (SF2) mohou mít vlastní licenční podmínky. Viz jednotlivé soundfont soubory pro jejich specifické licence.
 
 
