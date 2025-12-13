@@ -182,4 +182,4 @@ src/
 ---
 
 *Dokument vytvořen: 11. 12. 2025*  
-*Poslední aktualizace: 11. 12. 2025*
+*Poslední aktualizace: 13. 12. 2025*
