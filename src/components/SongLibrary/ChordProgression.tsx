@@ -183,11 +183,3 @@ function getSectionTypeLabel(type: SongSection['type']): string {
   return labels[type];
 }
 
-function getSectionLabel(type: SongSection['type'], index: number): string {
-  const typeLabel = getSectionTypeLabel(type);
-  if (type === 'chorus' || type === 'bridge' || type === 'intro' || type === 'outro') {
-    return typeLabel;
-  }
-  return `${typeLabel} ${index + 1}`;
-}
-
