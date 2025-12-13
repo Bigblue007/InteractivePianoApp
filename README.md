@@ -29,11 +29,24 @@ npm install
 
 ## Spuštění
 
+### Vývoj
+
 ```bash
 npm run dev
 ```
 
 Aplikace poběží na `http://localhost:3000`
+
+### Produkční build
+
+```bash
+npm run build
+npm run preview
+```
+
+### Publikace
+
+Pro návod na publikaci aplikace viz [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 **Poznámka k MIDI:** Pro připojení MIDI zařízení doporučujeme použít **Chrome** nebo **Edge**. Firefox má omezenou podporu a vyžaduje add-on. Pokud máte problémy s MIDI, zkuste spustit dev server s HTTPS:
 

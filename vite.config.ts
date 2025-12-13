@@ -10,6 +10,9 @@ export default defineConfig(({ command, mode }) => {
   const useHttps = process.env.VITE_HTTPS === 'true' || mode === 'https';
 
   return {
+    // Base path pro GitHub Pages (pokud bude aplikace na /InteractivePianoApp/)
+    // Pro produkci na vlastní doméně nebo Vercel/Netlify nastavit na '/'
+    base: process.env.VITE_BASE_PATH || '/',
     plugins: [
       react(),
       ...(useHttps ? [mkcert()] : []), // Přidat mkcert plugin pouze pro HTTPS
