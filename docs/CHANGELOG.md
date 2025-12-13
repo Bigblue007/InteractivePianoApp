@@ -18,6 +18,44 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.0] - 2025-12-13
+
+### Přidáno
+- **Knihovna písniček** - Kompletní systém pro správu a prohlížení písní
+  - Vyhledávání písní podle názvu a interpreta (case-insensitive)
+  - Zobrazení seznamu písní s výběrem
+  - Detail písně s chord progression
+  - Podpora sekcí (verse, chorus, bridge, intro, outro) pro strukturované zobrazení akordů
+  - 20 předpřipravených populárních písní
+  - Klikatelné akordy s přehráváním při držení tlačítka myši
+  - Zobrazení akordů na klaviatuře a v notové osnově při kliknutí
+  - Horizontální layout akordů jako tlačítka
+  - Tlačítko "Zpět" pro návrat do seznamu písní
+- **SongLibrary komponenta** - Hlavní komponenta pro knihovnu písniček
+- **ChordProgression komponenta** - Zobrazení akordů s podporou sekcí
+- **Utility funkce** - `chordToMidiNotes` pro konverzi názvu akordu na MIDI noty
+
+### Změněno
+- **UI layout knihovny písniček** - Kompaktnější design pro lepší využití prostoru
+  - Zmenšené paddingy a mezery
+  - Název písně a interpret na jednom řádku (název tučně)
+  - Odstraněn text "Chord Progression:" pro čistší vzhled
+  - Scrollování pouze v části s akordy (pokud je potřeba)
+- **ChordProgression** - Horizontální layout místo vertikálního
+  - Akordy zobrazeny jako tlačítka vedle sebe
+  - Podpora sekcí s hlavičkami (Sloka, Refrén, Bridge, Intro, Outro)
+  - Automatické číslování sekcí (Verse 1, Verse 2, atd.)
+- **Přehrávání akordů** - Hold mouse button místo jednoho kliknutí
+  - Akord se přehrává při držení tlačítka myši
+  - Přehrávání se zastaví při uvolnění tlačítka
+  - Podpora touch zařízení
+
+### Opraveno
+- **Zobrazení detailu písně** - Opraveno prázdné okno při výběru písně (chybějící props)
+- **Zvýraznění akordů** - Opraveno zvýraznění správného akordu při duplikátech (použití indexu místo findIndex)
+
+---
+
 ## [0.2.1] - 2025-12-13
 
 ### Přidáno

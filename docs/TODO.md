@@ -51,41 +51,36 @@
 
 ---
 
-### 3. Doladit barvy podbarvených černých kláves
+### 3. ✅ Doladit barvy podbarvených černých kláves
+**Status:** ✅ **HOTOVÉ** (Release 0.2.1)
+
 **Problém:** Uprostřed podbarvené "černé" klávesy je vidět čára (pravděpodobně border nebo outline).
 
-**Požadavky:**
-- Opravit zobrazení podbarvených černých kláves
-- Zajistit, aby podbarvení bylo jednotné bez viditelných čar
-- Možná úprava CSS pro `highlighted` třídu u černých kláves
+**Řešení:**
+- Opraveno prosvítání černé čáry z bílé klávesy při zvýraznění
+- Sjednocena barva zvýraznění pro bílé i černé klávesy (zlatá barva)
+- Nastaveno `opacity: 1` pro černé klávesy, `opacity: 0.9` pro bílé klávesy
+- Přidán `stroke: #333` a `stroke-width: 2` pro černé klávesy s `paint-order: stroke fill`
 
-**Technické poznámky:**
-- Zkontrolovat CSS pro `.black-key.highlighted`
-- Možná problém s `border` nebo `outline` vlastnostmi
-- Zajistit, aby podbarvení pokrývalo celou plochu klávesy
-
-**Soubory k úpravě:**
+**Implementováno v:**
 - `src/components/PianoKeyboard/PianoKeyboard.css`
-- Možná `src/components/PianoKeyboard/PianoKeyboard.tsx` (logika vykreslování)
+- Release 0.2.1 (2025-12-13)
 
 ---
 
-### 4. Vypínání podbarvení vybraného akordu při hraní
+### 4. ✅ Vypínání podbarvení vybraného akordu při hraní
+**Status:** ✅ **HOTOVÉ** (Release 0.2.1)
+
 **Popis:** Automaticky vypnout podbarvení vybraného akordu, když uživatel zahraje stejný akord na kontroleru nebo klávesnici.
 
-**Požadavky:**
-- Detekce, zda zahrané noty odpovídají vybranému akordu
-- Automatické vymazání `selectedChordNotes` při detekci
+**Řešení:**
+- Implementováno v `App.tsx` pomocí `useEffect` hooku
+- Automatické vymazání `selectedChordNotes` při jakémkoli hraní (`activeNotes.size > 0`)
 - Funguje pro MIDI kontroler i virtuální klávesnici (myš/touch)
 
-**Technické poznámky:**
-- Porovnání `activeNotes` s `selectedChordNotes`
-- Možná tolerance pro detekci (např. všechny noty akordu musí být přítomny)
-- Implementace v `App.tsx` nebo nový hook
-
-**Soubory k úpravě:**
-- `src/App.tsx` (logika pro porovnání not)
-- Možná nový utility soubor pro porovnání akordů
+**Implementováno v:**
+- `src/App.tsx` (řádky 34-39)
+- Release 0.2.1 (2025-12-13)
 
 ---
 
@@ -111,7 +106,7 @@
 
 ---
 
-*Poslední aktualizace: 11. 12. 2025*
+*Poslední aktualizace: 13. 12. 2025*
 
 
 

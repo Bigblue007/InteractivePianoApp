@@ -287,11 +287,22 @@ src/
    - ✅ Hybridní přístup: automatická + ruční inicializace
    - ✅ Inicializace při prvním kliknutí na klávesu nebo přehrání akordu
 
-### 📋 Připraveno pro budoucí rozšíření
+### ✅ Nově implementováno (Release 0.3.0)
 
 1. **Knihovna písniček**
    - ✅ Store vytvořen (`useSongLibraryStore`)
-   - ❌ UI komponenty chybí
+   - ✅ UI komponenty implementovány
+   - ✅ Vyhledávání podle názvu a interpreta
+   - ✅ Zobrazení chord progression s podporou sekcí
+   - ✅ Klikatelné akordy s přehráváním
+   - ✅ 20 předpřipravených populárních písní
+   - ✅ Podpora sekcí (verse, chorus, bridge, intro, outro)
+
+### 📋 Připraveno pro budoucí rozšíření
+
+1. **Editace a mazání písní**
+   - ✅ Store podporuje `updateSong` a `deleteSong`
+   - ❌ UI komponenty pro editaci chybí (plánováno v 0.4.0)
 
 2. **Knihovna akordů**
    - ✅ Store vytvořen (`useChordLibraryStore`)

@@ -3,7 +3,11 @@ import { usePianoStore } from '../../stores/usePianoStore';
 import { ScoreRenderer } from '../../services/score/ScoreRenderer';
 import './ScoreView.css';
 
-export function ScoreView() {
+interface ScoreViewProps {
+  displayNotes?: number[]; // Noty z knihovny písniček
+}
+
+export function ScoreView({ displayNotes }: ScoreViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<ScoreRenderer | null>(null);
   const activeNotes = usePianoStore((state) => state.activeNotes);
@@ -17,10 +21,13 @@ export function ScoreView() {
 
   useEffect(() => {
     if (rendererRef.current) {
-      const notesArray = Array.from(activeNotes);
+      // Pokud jsou displayNotes z knihovny, použít je, jinak použít activeNotes
+      const notesArray = displayNotes && displayNotes.length > 0 
+        ? displayNotes 
+        : Array.from(activeNotes);
       rendererRef.current.renderNotes(notesArray);
     }
-  }, [activeNotes]);
+  }, [activeNotes, displayNotes]);
 
   return (
     <div className="score-view">

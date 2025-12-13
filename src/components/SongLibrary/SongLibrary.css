@@ -1,0 +1,23 @@
+.song-library {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.song-library-header {
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.song-library-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.87);
+  font-weight: 500;
+}
+
