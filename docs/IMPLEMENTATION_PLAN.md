@@ -494,7 +494,10 @@ Aplikace je připravena na rozšíření o další funkce, jako je knihovna pís
 
 ### UI vylepšení (13. 12. 2025) - Release 0.3.1
 - **Detekovaný akord** - Přidán placeholder "-" pro zobrazení, když není detekován žádný akord
-- **Sjednocení velikosti písma** - Detekovaný akord má stejnou velikost písma jako výběr akordu (použití třídy `chord-name-display`)
+- **Sjednocení velikosti písma** - Detekovaný akord má stejnou velikost písma jako výběr akordu (použití třídy `chord-name`)
+- **Pořadí nástrojů** - Piano (synth) je nyní první a výchozí nástroj, DX7 Modern (synth) je druhé, Piano (Acoustic) je poslední
+- **Oprava CSS selektorů** - Opravena nekonzistence mezi TSX třídou a CSS selektorem
+- **Styling placeholderu** - Placeholder má nyní správně ztlumený vzhled
 
 ---
 

@@ -4,7 +4,7 @@ Tento dokument popisuje různé možnosti publikace aplikace Harmonia na web.
 
 ## Možnosti publikace
 
-### 1. GitHub Pages (Doporučeno - zdarma, jednoduché)
+### 1. GitHub Pages (Zdarma, jednoduché)
 
 **Výhody:**
 - ✅ Zdarma
@@ -15,11 +15,9 @@ Tento dokument popisuje různé možnosti publikace aplikace Harmonia na web.
 **Nevýhody:**
 - ⚠️ Statické soubory (není server-side rendering)
 - ⚠️ Omezení na 1 GB velikost repozitáře
+- ⚠️ Vyžaduje aktivaci GitHub Pages v nastavení repozitáře
 
-**Postup:**
-1. Vytvořit GitHub Actions workflow pro automatické deployment
-2. Nastavit GitHub Pages v nastavení repozitáře
-3. Aplikace bude dostupná na `https://[username].github.io/InteractivePianoApp/`
+**Poznámka:** GitHub Pages není aktivní v tomto repozitáři. Pokud ho chceš použít, musíš ho aktivovat v Settings → Pages.
 
 ---
 
@@ -84,7 +82,9 @@ Tento dokument popisuje různé možnosti publikace aplikace Harmonia na web.
 
 ---
 
-## Doporučený postup: GitHub Pages s automatickým deployment
+## GitHub Pages (pokud ho chceš použít)
+
+**Poznámka:** GitHub Pages není aktivní v tomto repozitáři. Pokud ho chceš použít, musíš ho aktivovat v Settings → Pages.
 
 ### Krok 1: Vytvořit GitHub Actions workflow
 
@@ -168,6 +168,8 @@ export default defineConfig({
 
 Po pushnutí do `main` branch se automaticky spustí workflow a aplikace bude dostupná na:
 `https://[username].github.io/InteractivePianoApp/`
+
+**Poznámka:** Workflow pro GitHub Pages byl odstraněn z tohoto repozitáře, protože GitHub Pages není aktivní.
 
 ---
 

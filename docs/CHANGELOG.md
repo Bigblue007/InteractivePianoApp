@@ -22,7 +22,12 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ### Změněno
 - **Detekovaný akord** - Přidán placeholder "-" pro zobrazení, když není detekován žádný akord
-- **Velikost písma detekovaného akordu** - Sjednocena velikost písma s výběrem akordu (použití stejné třídy `chord-name-display`)
+- **Velikost písma detekovaného akordu** - Sjednocena velikost písma s výběrem akordu (použití stejné třídy `chord-name`)
+- **Pořadí nástrojů** - Piano (synth) je nyní první a výchozí nástroj, DX7 Modern (synth) je druhé, Piano (Acoustic) je poslední
+
+### Opraveno
+- **CSS selektory** - Opravena nekonzistence mezi TSX třídou `chord-name` a CSS selektorem `chord-name-display`
+- **Styling placeholderu** - Placeholder "-" má nyní správně ztlumený vzhled (opacity 0.5, normal font-weight)
 
 ---
 

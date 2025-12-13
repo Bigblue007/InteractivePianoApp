@@ -14,26 +14,26 @@ export function InstrumentSelector() {
   const audioInitialized = useAudioStore((state) => state.initialized);
 
   // Přidat výchozí nástroje při mount
-  // POŘADÍ: Syntetické nástroje nahoře, akustické piano dole
+  // POŘADÍ: Piano (synth) první, DX7 Modern (synth) druhé, Piano (Acoustic) poslední
   useEffect(() => {
-    // Zkontrolovat, zda už existuje DX7 (synthetic) - přidat jako první
-    const dx7Exists = soundfonts.some((sf) => sf.id === 'dx7');
-    if (!dx7Exists) {
-      addSoundFont({
-        id: 'dx7',
-        name: 'DX7 Modern (synth)',
-        url: 'synthetic:dx7',
-        loaded: false,
-      });
-    }
-    
-    // Zkontrolovat, zda už existuje piano (synthetic) - přidat jako druhý
+    // Zkontrolovat, zda už existuje piano (synthetic) - přidat jako první
     const pianoExists = soundfonts.some((sf) => sf.id === 'piano');
     if (!pianoExists) {
       addSoundFont({
         id: 'piano',
         name: 'Piano (synth)',
         url: 'synthetic:piano',
+        loaded: false,
+      });
+    }
+    
+    // Zkontrolovat, zda už existuje DX7 (synthetic) - přidat jako druhé
+    const dx7Exists = soundfonts.some((sf) => sf.id === 'dx7');
+    if (!dx7Exists) {
+      addSoundFont({
+        id: 'dx7',
+        name: 'DX7 Modern (synth)',
+        url: 'synthetic:dx7',
         loaded: false,
       });
     }
@@ -48,7 +48,12 @@ export function InstrumentSelector() {
         loaded: false,
       });
     }
-  }, [soundfonts, addSoundFont]);
+    
+    // Nastavit Piano (synth) jako výchozí, pokud není vybrán žádný nástroj
+    if (!selectedSoundFontId && pianoExists) {
+      selectSoundFont('piano');
+    }
+  }, [soundfonts, addSoundFont, selectedSoundFontId, selectSoundFont]);
 
   // Načíst nástroj při změně výběru nebo inicializaci
   useEffect(() => {
@@ -117,12 +122,12 @@ export function InstrumentSelector() {
     return null;
   }
 
-  // Seřadit nástroje: syntetické nahoře, akustické piano dole
+  // Seřadit nástroje: Piano (synth) první, DX7 Modern (synth) druhé, Piano (Acoustic) poslední
   // Definovat explicitní pořadí pro garantované řazení
   const instrumentOrder: Record<string, number> = {
-    'dx7': 1,           // Syntetické nástroje nahoře
-    'piano': 2,
-    'piano-acoustic': 10, // Akustické piano dole
+    'piano': 1,           // Piano (synth) první
+    'dx7': 2,             // DX7 Modern (synth) druhé
+    'piano-acoustic': 10, // Piano (Acoustic) poslední
   };
   
   const sortedSoundfonts = [...soundfonts].sort((a, b) => {
@@ -140,7 +145,7 @@ export function InstrumentSelector() {
       <div className="instrument-selector-wrapper">
         <select
           id="instrument-select"
-          value={selectedSoundFontId || sortedSoundfonts[0]?.id || ''}
+          value={selectedSoundFontId || 'piano' || sortedSoundfonts[0]?.id || ''}
           onChange={(e) => handleSelect(e.target.value)}
           disabled={isLoading}
         >
@@ -160,5 +165,4 @@ export function InstrumentSelector() {
     </div>
   );
 }
-
 
