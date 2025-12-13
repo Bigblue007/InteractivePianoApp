@@ -18,6 +18,14 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.1] - 2025-12-13
+
+### Změněno
+- **Detekovaný akord** - Přidán placeholder "-" pro zobrazení, když není detekován žádný akord
+- **Velikost písma detekovaného akordu** - Sjednocena velikost písma s výběrem akordu (použití stejné třídy `chord-name-display`)
+
+---
+
 ## [0.3.0] - 2025-12-13
 
 ### Přidáno

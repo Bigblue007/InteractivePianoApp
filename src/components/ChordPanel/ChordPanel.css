@@ -18,7 +18,7 @@
   font-weight: 500;
 }
 
-.chord-name {
+.chord-panel .chord-name-display {
   font-size: 1.95rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.95);
@@ -26,11 +26,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .no-chord {
   color: rgba(255, 255, 255, 0.5);
   font-weight: normal;
+}
+
+.selected-chord-name {
+  font-size: 1.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 

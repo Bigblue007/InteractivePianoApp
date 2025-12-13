@@ -492,6 +492,10 @@ Aplikace je připravena na rozšíření o další funkce, jako je knihovna pís
 - **Horizontální layout** - Akordy zobrazeny jako tlačítka vedle sebe
 - **Kompaktní design** - Optimalizováno pro zobrazení bez scrollování
 
+### UI vylepšení (13. 12. 2025) - Release 0.3.1
+- **Detekovaný akord** - Přidán placeholder "-" pro zobrazení, když není detekován žádný akord
+- **Sjednocení velikosti písma** - Detekovaný akord má stejnou velikost písma jako výběr akordu (použití třídy `chord-name-display`)
+
 ---
 
 *Dokument vytvořen: 11. 12. 2025*  

@@ -15,8 +15,8 @@ export function ChordPanel() {
   return (
     <div className="chord-panel">
       <h3>Detekovaný akord</h3>
-      <div className="chord-name">
-        {chordName || <span className="no-chord">—</span>}
+      <div className="chord-name-display">
+        {chordName || '-'}
       </div>
     </div>
   );
