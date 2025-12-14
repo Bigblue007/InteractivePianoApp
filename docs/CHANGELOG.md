@@ -18,6 +18,25 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.2] - 2025-12-14
+
+### Přidáno
+- **Editor písní** - Samostatná aplikace pro vývojáře k úpravě song library
+  - Načítání písní z TypeScript souboru (`popularSongs.ts`)
+  - Editace písní s drag & drop sekcemi
+  - Inline editace akordů s validací
+  - Export do TypeScript formátu pro kopírování do `popularSongs.ts`
+  - Export/Import JSON souborů
+  - Validace akordů pomocí @tonaljs/tonal
+  - Lokální ukládání do localStorage
+
+### Změněno
+- **Dokumentace** - Aktualizována dokumentace s informací o Cursor a novém editoru písní
+  - Přidána informace o Cursor do README.md, LICENSE, CHANGELOG.md a IMPLEMENTATION_PLAN.md
+  - Přidána sekce o editoru písní do README.md
+
+---
+
 ## [0.3.1] - 2025-12-13
 
 ### Změněno
@@ -270,4 +289,6 @@ src/
 ---
 
 *Dokument vytvořen: 11. 12. 2025*  
-*Poslední aktualizace: 13. 12. 2025*
+*Poslední aktualizace: 14. 12. 2025*
+
+> **Poznámka:** Tato aplikace byla vytvořena pomocí [Cursor](https://cursor.sh/) - AI-powered editoru pro vývojáře.

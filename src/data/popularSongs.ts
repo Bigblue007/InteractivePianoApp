@@ -9,43 +9,34 @@ export const POPULAR_SONGS: Omit<Song, 'id' | 'createdAt' | 'updatedAt'>[] = [
       {
         type: "verse",
         label: "Verse 1",
-        chords: ["C", "G", "Am", "F"]
+        chords: ["C", "G", "Am", "F", "C", "G", "F", "C"]
       },
       {
         type: "chorus",
-        chords: ["C", "G", "F", "C"]
-      },
-      {
-        type: "verse",
-        label: "Verse 2",
-        chords: ["C", "G", "Am", "F"]
-      },
-      {
-        type: "chorus",
-        chords: ["C", "G", "F", "C"]
+        chords: ["Am", "G", "F", "C"]
       }
     ]
   },
   {
     title: "Wonderwall",
     artist: "Oasis",
-    chords: ["Em", "G", "D", "C", "Em", "G", "D", "C"],
+    chords: ["Em", "G", "D", "A", "Em", "G", "D", "A"], // Fallback pro backward compatibility
     sections: [
       {
         type: "verse",
         label: "Verse 1",
-        chords: ["Em", "G", "D", "C"]
+        chords: ["Em", "G", "D", "A", "Em", "G", "D", "A", "C"]
       },
       {
         type: "chorus",
-        chords: ["Em", "G", "D", "C"]
+        chords: ["C", "D", "Emi"]
       }
     ]
   },
   {
     title: "Hallelujah",
     artist: "Leonard Cohen",
-    chords: ["C", "Am", "C", "Am", "F", "G", "C", "G", "Am"],
+    chords: ["C", "Am", "C", "Am", "F", "G", "C", "G", "Am"], // Fallback pro backward compatibility
     sections: [
       {
         type: "verse",
@@ -54,94 +45,105 @@ export const POPULAR_SONGS: Omit<Song, 'id' | 'createdAt' | 'updatedAt'>[] = [
       },
       {
         type: "chorus",
-        chords: ["F", "G", "C", "G", "Am"]
+        chords: ["F", "Am", "F", "C", "G", "C", "G"]
       }
     ]
   },
   {
     title: "Stand By Me",
     artist: "Ben E. King",
-    chords: ["C", "Am", "F", "G", "C", "Am", "F", "G"]
+    chords: ["C", "Am", "F", "G", "C", "Am", "F", "G"], // Fallback pro backward compatibility
+    sections: [
+      {
+        type: "verse",
+        label: "Verse 1",
+        chords: ["G", "Em", "C", "D", "G"]
+      },
+      {
+        type: "chorus",
+        label: "Chorus 1",
+        chords: ["G", "Em", "C", "D", "G"]
+      }
+    ]
   },
   {
     title: "Hey Jude",
     artist: "The Beatles",
-    chords: ["C", "F", "C", "F", "C", "G", "F", "C"]
+    chords: ["C", "F", "C", "F", "C", "G", "F", "C"], // Fallback pro backward compatibility
   },
   {
     title: "Hotel California",
     artist: "Eagles",
-    chords: ["Am", "E", "G", "D", "F", "C", "Dm", "E"]
+    chords: ["Am", "E", "G", "D", "F", "C", "Dm", "E"], // Fallback pro backward compatibility
   },
   {
     title: "Sweet Home Alabama",
     artist: "Lynyrd Skynyrd",
-    chords: ["D", "C", "G", "D", "C", "G"]
+    chords: ["D", "C", "G", "D", "C", "G"], // Fallback pro backward compatibility
   },
   {
-    title: "Free Fallin'",
+    title: "Free Fallin",
     artist: "Tom Petty",
-    chords: ["F", "C", "G", "Am", "F", "C", "G"]
+    chords: ["F", "C", "G", "Am", "F", "C", "G"], // Fallback pro backward compatibility
   },
   {
-    title: "Knockin' on Heaven's Door",
+    title: "Knockin",
     artist: "Bob Dylan",
-    chords: ["G", "D", "Am", "G", "D", "C"]
+    chords: ["G", "D", "Am", "G", "D", "C"], // Fallback pro backward compatibility
   },
   {
     title: "Country Roads",
     artist: "John Denver",
-    chords: ["G", "Em", "C", "D", "G", "Em", "C", "D"]
+    chords: ["G", "Em", "C", "D", "G", "Em", "C", "D"], // Fallback pro backward compatibility
   },
   {
     title: "Imagine",
     artist: "John Lennon",
-    chords: ["C", "Cmaj7", "F", "C", "F", "C", "Dm", "G"]
+    chords: ["C", "Cmaj7", "F", "C", "F", "C", "Dm", "G"], // Fallback pro backward compatibility
   },
   {
     title: "Horse with No Name",
     artist: "America",
-    chords: ["Em", "D6", "Em", "D6", "Em", "D6", "Em"]
+    chords: ["Em", "D6", "Em", "D6", "Em", "D6", "Em"], // Fallback pro backward compatibility
   },
   {
     title: "Wish You Were Here",
     artist: "Pink Floyd",
-    chords: ["Am", "C", "D", "F", "Am", "C", "G", "Am"]
+    chords: ["Am", "C", "D", "F", "Am", "C", "G", "Am"], // Fallback pro backward compatibility
   },
   {
     title: "Stairway to Heaven",
     artist: "Led Zeppelin",
-    chords: ["Am", "C", "D", "F", "Am", "C", "D", "F", "G"]
+    chords: ["Am", "C", "D", "F", "Am", "C", "D", "F", "G"], // Fallback pro backward compatibility
   },
   {
     title: "Blackbird",
     artist: "The Beatles",
-    chords: ["G", "Am", "G", "Am", "C", "D", "G"]
+    chords: ["G", "Am", "G", "Am", "C", "D", "G"], // Fallback pro backward compatibility
   },
   {
     title: "Dust in the Wind",
     artist: "Kansas",
-    chords: ["C", "Am", "C", "Am", "F", "G", "C"]
+    chords: ["C", "Am", "C", "Am", "F", "G", "C"], // Fallback pro backward compatibility
   },
   {
     title: "House of the Rising Sun",
     artist: "The Animals",
-    chords: ["Am", "C", "D", "F", "Am", "C", "E", "Am"]
+    chords: ["Am", "C", "D", "F", "Am", "C", "E", "Am"], // Fallback pro backward compatibility
   },
   {
     title: "The Sound of Silence",
     artist: "Simon & Garfunkel",
-    chords: ["Am", "C", "G", "Am", "F", "C", "G", "Am"]
+    chords: ["Am", "C", "G", "Am", "F", "C", "G", "Am"], // Fallback pro backward compatibility
   },
   {
-    title: "Blowin' in the Wind",
+    title: "Blowin",
     artist: "Bob Dylan",
-    chords: ["G", "C", "G", "C", "G", "C", "D", "G"]
+    chords: ["G", "C", "G", "C", "G", "C", "D", "G"], // Fallback pro backward compatibility
   },
   {
     title: "Take Me Home, Country Roads",
     artist: "John Denver",
-    chords: ["G", "Em", "C", "D", "G", "Em", "C", "D", "G"]
+    chords: ["G", "Em", "C", "D", "G", "Em", "C", "D", "G"], // Fallback pro backward compatibility
   }
 ];
-

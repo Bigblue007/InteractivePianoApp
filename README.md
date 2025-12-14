@@ -1,5 +1,7 @@
 # Harmonia - Interaktivní webová klaviatura
 
+> **Poznámka:** Tato aplikace byla vytvořena pomocí [Cursor](https://cursor.sh/) - AI-powered editoru pro vývojáře.
+
 **Harmonia** je webová aplikace pro muzikanty s interaktivní klaviaturou, která vizualizuje stisknuté klávesy, přehrává tóny, detekuje akordy a zobrazuje noty v notovém zápisu.
 
 ## Funkce
@@ -8,8 +10,11 @@
 - 🎵 Připojení přes MIDI (včetně sustain pedálu)
 - 🎼 Detekce akordů pomocí @tonaljs/tonal
 - 📝 Zobrazení not v notové osnově (VexFlow)
-- 🔊 Podpora sf2 soundfontů (ZanderJa)
-- 🎛️ Výběr nástroje
+- 🔊 Podpora sf2 soundfontů (ZanderJa) a audio samplů
+- 🎛️ Výběr nástroje (Piano, DX7 Modern, Piano Acoustic)
+- 📚 Knihovna písní s akordy a sekcemi (verse, chorus, bridge, intro, outro)
+- 🎵 Přehrávání akordů z knihovny písní
+- 🛠️ Samostatný editor písní pro vývojáře (song-editor/)
 
 ## Technologie
 
@@ -79,18 +84,26 @@ src/
 │   ├── PianoKeyboard/
 │   ├── ScoreView/
 │   ├── ChordPanel/
+│   ├── ChordSelector/
 │   ├── InstrumentSelector/
 │   ├── MIDIConnector/
-│   └── AudioInitButton/
+│   ├── AudioInitButton/
+│   └── SongLibrary/  # Knihovna písní
 ├── services/        # Business logika
 │   ├── audio/      # Zvukový engine
 │   ├── midi/       # MIDI handling
 │   ├── chord/      # Detekce akordů
 │   └── score/      # Notový zápis
 ├── stores/         # Zustand stores
-├── hooks/          # Custom React hooks
+├── data/           # Data (písně, presety)
 ├── utils/          # Pomocné funkce
 └── types/          # TypeScript typy
+
+song-editor/         # Samostatný editor písní (vývojářský nástroj)
+├── src/
+│   ├── components/  # Komponenty editoru
+│   ├── stores/     # Editor store
+│   └── utils/      # Parser a exporter
 ```
 
 ## Soundfonty
@@ -118,14 +131,36 @@ Pro přidání dalších soundfontů:
 - **[CHANGELOG.md](docs/CHANGELOG.md)** - Podrobný seznam všech změn, oprav a řešených problémů
 - **[VERSIONING.md](docs/VERSIONING.md)** - Návod na verzování a vytváření releases
 - **[IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md)** - Plán implementace a aktuální stav projektu
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Návod na publikaci aplikace
 - **[TODO.md](docs/TODO.md)** - Seznam plánovaných funkcí a úkolů
 - **[interactive-piano-def.md](docs/interactive-piano-def.md)** - Původní technický průvodce projektu
+
+## Vývoj
+
+Tato aplikace byla vytvořena pomocí [Cursor](https://cursor.sh/) - AI-powered editoru pro vývojáře, který umožňuje efektivní vývoj pomocí AI asistenta.
+
+## Editor písní
+
+Projekt obsahuje samostatný editor písní (`song-editor/`) určený pro vývojáře k úpravě song library:
+
+- Načítání písní z TypeScript souboru (`src/data/popularSongs.ts`)
+- Editace písní s drag & drop sekcemi
+- Validace akordů
+- Export do TypeScript formátu pro kopírování do `popularSongs.ts`
+
+**Spuštění editoru:**
+```bash
+cd song-editor
+npm install
+npm run dev
+```
+
+Editor poběží na `http://localhost:3001`
 
 ## Budoucí rozšíření
 
 - Ovládání klaviatury klávesnicí počítače
 - Chord Inversions v výběru akordů
-- Knihovna písniček s akordy
 - Knihovna akordů
 - Záznam a export do MIDI
 - Metronom

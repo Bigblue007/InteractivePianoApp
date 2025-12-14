@@ -1,7 +1,9 @@
 # Plán implementace - Interaktivní webová klaviatura
 
 *Datum vytvoření: 11. 12. 2025*  
-*Poslední aktualizace: 13. 12. 2025*
+*Poslední aktualizace: 14. 12. 2025*
+
+> **Poznámka:** Tato aplikace byla vytvořena pomocí [Cursor](https://cursor.sh/) - AI-powered editoru pro vývojáře.
 
 ## Přehled
 
@@ -491,6 +493,15 @@ Aplikace je připravena na rozšíření o další funkce, jako je knihovna pís
 - **Sekce** - Strukturované zobrazení s hlavičkami (Sloka, Refrén, Bridge, Intro, Outro)
 - **Horizontální layout** - Akordy zobrazeny jako tlačítka vedle sebe
 - **Kompaktní design** - Optimalizováno pro zobrazení bez scrollování
+
+### Editor písní (14. 12. 2025) - Unreleased
+- **Samostatná aplikace** - Editor písní jako vývojářský nástroj (`song-editor/`)
+- **TypeScript parser** - Načítání písní z `popularSongs.ts` s podporou vnořených struktur
+- **Drag & Drop** - Přesouvání sekcí pomocí @dnd-kit
+- **Inline editace** - Editace akordů přímo v sekcích s validací
+- **Import/Export** - Načítání z TypeScript/JSON a export do TypeScript formátu
+- **Validace** - Validace akordů pomocí @tonaljs/tonal
+- **LocalStorage** - Automatické ukládání do localStorage
 
 ### UI vylepšení (13. 12. 2025) - Release 0.3.1
 - **Detekovaný akord** - Přidán placeholder "-" pro zobrazení, když není detekován žádný akord
