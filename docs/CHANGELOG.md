@@ -2,6 +2,12 @@
 
 Všechny významné změny v projektu budou zdokumentovány v tomto souboru.
 
+## [0.3.7] - 2024-12-XX
+
+### Opraveno
+- **Basový klíč - zobrazování not**: Opraveno zobrazování not na basové osnově. Noty se nyní zobrazují na správných pozicích pomocí přímého mapování MIDI not na VexFlow notace pro basový klíč. C3 se nyní zobrazuje mezi druhou a třetí linkou, F3 na čtvrté lince.
+- **MIDI kontroler**: Opraveno připojení a zpracování MIDI zpráv z externích kontrolerů. MIDI zprávy se nyní správně zpracovávají a zobrazují v aplikaci.
+
 Formát je založen na [Keep a Changelog](https://keepachangelog.com/cs/1.0.0/),
 a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 

@@ -152,6 +152,13 @@ export class ScoreRenderer {
 
   /**
    * Konvertuje MIDI noty na VexFlow noty
+   * 
+   * Používá přímé mapování pro basový klíč, protože výpočetní přístup nefunguje správně.
+   * 
+   * Referenční body:
+   * - Houslový klíč: G4 (MIDI 67) na druhé lince = "g/4"
+   * - Basový klíč: F3 (MIDI 53) na čtvrté lince = "f/3"
+   * 
    * @param midiNotes Pole MIDI not
    * @param clef Typ klíče ('treble' nebo 'bass')
    * @returns Objekt s notami a informací o potřebě oktávových značek
@@ -160,61 +167,82 @@ export class ScoreRenderer {
     midiNotes: number[], 
     clef: 'treble' | 'bass' = 'treble'
   ): { notes: StaveNote[]; needsOttavaAlta: boolean; needsOttavaBassa: boolean } {
-    // Mapování MIDI not na základní noty (bez křížků v názvu)
+    // Mapování MIDI note (0-11) na základní notu bez křížku
     const baseNoteMap: Record<number, string> = {
-      0: 'c',   // C
-      1: 'c',   // C# (bude mít accidental)
-      2: 'd',   // D
-      3: 'd',   // D# (bude mít accidental)
-      4: 'e',   // E
-      5: 'f',   // F
-      6: 'f',   // F# (bude mít accidental)
-      7: 'g',   // G
-      8: 'g',   // G# (bude mít accidental)
-      9: 'a',   // A
-      10: 'a',  // A# (bude mít accidental)
-      11: 'b',  // B
+      0: 'c', 1: 'c', 2: 'd', 3: 'd', 4: 'e', 5: 'f',
+      6: 'f', 7: 'g', 8: 'g', 9: 'a', 10: 'a', 11: 'b',
+    };
+
+    // Přímé mapování MIDI → VexFlow pro basový klíč
+    // VexFlow pro basový klíč potřebuje noty o 1 oktávu níž než standardní výpočet
+    // C3 (MIDI 48) by mělo být mezi 2. a 3. linkou = "c/3" ✓
+    // B2 (MIDI 47) by mělo být o oktávu níž = "b/2" (ne "b/3")
+    // F3 (MIDI 53) by mělo být na 4. lince = "f/3"
+    // C2 (MIDI 36) by mělo být mezi 2. a 3. linkou = "c/3" (ne "c/2")
+    const bassClefMap: Record<number, string> = {
+      // Velmi nízké noty (s 8vb značkou)
+      21: 'a/1', 22: 'a/1', 23: 'b/1',
+      24: 'c/2', 25: 'c/2', 26: 'd/2', 27: 'd/2', 28: 'e/2', 29: 'f/2',
+      30: 'f/2', 31: 'g/2', 32: 'g/2', 33: 'a/2', 34: 'a/2', 35: 'b/2',
+      // Normální rozsah basového klíče
+      // Noty pod B2 (MIDI < 47) mají oktávu o 1 nižší
+      // B2 (MIDI 47) a výš používají standardní oktávu
+      36: 'c/2', 37: 'c/2', 38: 'd/2', 39: 'd/2', 40: 'e/2', 41: 'f/2',
+      42: 'f/2', 43: 'g/2', 44: 'g/2', 45: 'a/2', 46: 'a/2', 47: 'b/2', // B2 (MIDI 47) = "b/2" ✓
+      48: 'c/3', 49: 'c/3', 50: 'd/3', 51: 'd/3', 52: 'e/3', 53: 'f/3', // C3 (MIDI 48) a výš = standardní oktáva
+      54: 'f/3', 55: 'g/3', 56: 'g/3', 57: 'a/3', 58: 'a/3', 59: 'b/3',
     };
 
     const notes: string[] = [];
-    const accidentals: number[] = []; // Indexy not, které potřebují křížek
-    let needsOttavaAlta = false; // Pro vysoké noty (8va)
-    let needsOttavaBassa = false; // Pro nízké noty (8vb)
-    
-    // Hranice pro oktávové značky:
-    // Houslový klíč: nad C6 (96) nebo noty s více než 3 pomocnými linkami = 8va (zobrazit o oktávu níž)
-    // Basový klíč: pod C2 (36) nebo noty s více než 3 pomocnými linkami = 8vb (zobrazit o oktávu výš)
-    // Pro zjednodušení použijeme: houslový klíč nad C6 (96), basový klíč pod C2 (36)
-    const ottavaAltaThreshold = clef === 'treble' ? 96 : 999; // C6 pro houslový klíč
-    const ottavaBassaThreshold = clef === 'bass' ? 36 : 0; // C2 pro basový klíč
-    
+    const accidentals: number[] = [];
+    let needsOttavaAlta = false;
+    let needsOttavaBassa = false;
+
     for (let i = 0; i < midiNotes.length; i++) {
       const midi = midiNotes[i];
-      let octave = Math.floor(midi / 12) - 1;
       const note = midi % 12;
       const baseNote = baseNoteMap[note];
-      
-      if (baseNote) {
-        // Zkontrolovat, zda potřebujeme oktávovou značku
-        if (midi >= ottavaAltaThreshold) {
-          // Vysoká nota - zobrazit o oktávu níž
-          octave -= 1;
+
+      if (!baseNote) continue;
+
+      let vexNote: string;
+
+      if (clef === 'treble') {
+        // HOUSLOVÝ KLÍČ - použít standardní výpočet
+        // Referenční nota: G4 (MIDI 67) na druhé lince = "g/4"
+        // C4 (MIDI 60) = "c/4" je na první pomocné lince pod osnovou
+        let octave = Math.floor(midi / 12) - 1;
+        
+        // Pro velmi vysoké noty (nad C6 = MIDI 96) použít 8va značku
+        if (midi >= 96) {
+          octave -= 1; // Zobrazit o oktávu níž
           needsOttavaAlta = true;
-        } else if (midi <= ottavaBassaThreshold) {
-          // Nízká nota - zobrazit o oktávu výš
-          octave += 1;
-          needsOttavaBassa = true;
         }
         
-        // VexFlow formát: "c/4" (bez křížku v názvu)
-        const vexNote = `${baseNote}/${octave}`;
-        notes.push(vexNote);
-        
-        // Zaznamenat, které noty potřebují křížek
-        // Křížky jsou na pozicích: 1 (C#), 3 (D#), 6 (F#), 8 (G#), 10 (A#)
-        if ([1, 3, 6, 8, 10].includes(note)) {
-          accidentals.push(i);
+        vexNote = `${baseNote}/${octave}`;
+      } else {
+        // BASOVÝ KLÍČ - použít přímé mapování
+        // Pokud nota není v mapě, použít fallback výpočet
+        if (midi in bassClefMap) {
+          vexNote = bassClefMap[midi];
+          
+          // Zkontrolovat, zda potřebujeme 8vb značku (pro noty pod C2)
+          if (midi < 36) {
+            needsOttavaBassa = true;
+          }
+        } else {
+          // Fallback: použít standardní výpočet
+          let octave = Math.floor(midi / 12) - 1;
+          vexNote = `${baseNote}/${octave}`;
+          console.warn(`MIDI ${midi} není v bassClefMap, použit fallback: ${vexNote}`);
         }
+      }
+
+      notes.push(vexNote);
+
+      // Zaznamenat noty, které potřebují křížek (C#, D#, F#, G#, A#)
+      if ([1, 3, 6, 8, 10].includes(note)) {
+        accidentals.push(i);
       }
     }
 
@@ -227,9 +255,11 @@ export class ScoreRenderer {
       
       // VexFlow vyžaduje, aby součet délek not odpovídal num_beats (4 pro 4/4 takt)
       // Použijeme celou notu (w = whole note = 4 beatů) pro akord nebo jednotlivou notu
+      // Explicitně specifikovat klíč pro správné zobrazení not
       const staveNote = new StaveNote({ 
         keys: notes, 
-        duration: 'w' // Celá nota = 4 beatů, což odpovídá 4/4 taktu
+        duration: 'w', // Celá nota = 4 beatů, což odpovídá 4/4 taktu
+        clef: clef // Explicitně specifikovat klíč
       });
       
       // Přidat křížky k notám, které je potřebují
