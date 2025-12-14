@@ -27,6 +27,7 @@ function App() {
   const [selectedChordIndexInSection, setSelectedChordIndexInSection] = useState<number | undefined>(undefined);
   const [selectedSongChords, setSelectedSongChords] = useState<string[]>([]);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [skipMobileWarning, setSkipMobileWarning] = useState(false);
   const isMobilePhone = useIsMobilePhone();
   const activeNotes = usePianoStore((state) => state.activeNotes);
   const audioInitialized = useAudioStore((state) => state.initialized);
@@ -142,8 +143,9 @@ function App() {
   }, [selectedSongId]);
 
   // Zobrazit zprávu o nepodpořeném zařízení na mobilních telefonech
-  if (isMobilePhone) {
-    return <MobileNotSupported />;
+  // Pokud uživatel klikl na "Pokračovat", zobrazit aplikaci i na mobilu
+  if (isMobilePhone && !skipMobileWarning) {
+    return <MobileNotSupported onContinue={() => setSkipMobileWarning(true)} />;
   }
 
   return (

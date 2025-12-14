@@ -1,6 +1,27 @@
 import './MobileNotSupported.css';
 
-export function MobileNotSupported() {
+interface MobileNotSupportedProps {
+  onContinue?: () => void;
+}
+
+export function MobileNotSupported({ onContinue }: MobileNotSupportedProps) {
+  const handleContinue = async () => {
+    // Zkusit přepnout na landscape pomocí Screen Orientation API
+    if ('orientation' in screen && 'lock' in screen.orientation) {
+      try {
+        await (screen.orientation as any).lock('landscape');
+      } catch (error) {
+        // API může selhat (např. pokud už je zamčené nebo není podporováno)
+        console.log('Nepodařilo se přepnout na landscape:', error);
+      }
+    }
+    
+    // Zavolat callback pro pokračování
+    if (onContinue) {
+      onContinue();
+    }
+  };
+
   return (
     <div className="mobile-not-supported">
       <div className="mobile-not-supported-content">
@@ -23,6 +44,14 @@ export function MobileNotSupported() {
           <div className="device-icon desktop">💻</div>
           <div className="device-icon tablet">📱</div>
         </div>
+        {onContinue && (
+          <button 
+            className="mobile-not-supported-continue-btn"
+            onClick={handleContinue}
+          >
+            Pokračovat
+          </button>
+        )}
       </div>
     </div>
   );

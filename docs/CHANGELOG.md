@@ -18,6 +18,21 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.4] - 2025-12-15
+
+### Přidáno
+- **Tlačítko "Pokračovat"** - V zobrazení pro mobilní telefony přidáno tlačítko pro pokračování
+  - Umožňuje uživatelům přeskočit varování a zobrazit aplikaci i na mobilních telefonech
+  - Automatický pokus o přepnutí na landscape orientaci pomocí Screen Orientation API
+
+### Změněno
+- **Scrollování na mobilu** - Povoleno scrollování na mobilních zařízeních v landscape módu
+  - Uživatelé nyní mohou scrollovat prstem a vidět všechny komponenty (klaviatura, sekce pod klaviaturou)
+  - Plynulé scrollování díky `-webkit-overflow-scrolling: touch`
+- **Viewport nastavení** - Upraven viewport meta tag pro lepší podporu scrollování a zoomování
+
+---
+
 ## [0.3.3] - 2025-12-15
 
 ### Přidáno

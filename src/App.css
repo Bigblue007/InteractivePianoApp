@@ -9,6 +9,18 @@
   position: relative;
 }
 
+/* Mobilní zařízení - landscape - povolit scrollování */
+@media (max-width: 1024px) and (orientation: landscape),
+       (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .app {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling na iOS */
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
+
 header {
   display: none; /* Skrytý, protože je nyní v center-panel */
 }
@@ -107,6 +119,18 @@ main {
   padding: 0 1rem;
   flex: 1;
   min-height: 0;
+}
+
+/* Mobilní zařízení - landscape - povolit scrollování */
+@media (max-width: 1024px) and (orientation: landscape),
+       (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  main {
+    overflow-y: visible;
+    overflow-x: hidden;
+    flex: none; /* Zrušit flex, aby se obsah mohl rozšířit */
+    min-height: auto;
+    padding-bottom: 1rem; /* Přidat padding dole pro lepší scrollování */
+  }
 }
 
 .top-section-wrapper {
@@ -248,5 +272,19 @@ main {
   width: 100%;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+/* Mobilní zařízení - landscape - zajistit viditelnost klaviatury */
+@media (max-width: 1024px) and (orientation: landscape),
+       (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .piano-section {
+    flex-shrink: 0; /* Zajistit, že klaviatura se nezmenší */
+    margin: 0.5rem 0; /* Přidat mezery pro lepší viditelnost */
+  }
+  
+  .bottom-section {
+    flex-shrink: 0; /* Zajistit, že bottom section se zobrazí */
+    min-height: auto; /* Zrušit min-height omezení */
+  }
 }
 
