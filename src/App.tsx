@@ -9,11 +9,13 @@ import { NotationSelector } from './components/NotationSelector/NotationSelector
 import { WelcomeDialog } from './components/WelcomeDialog/WelcomeDialog';
 import { AudioManager } from './components/AudioManager/AudioManager';
 import { SongLibrary } from './components/SongLibrary/SongLibrary';
+import { MobileNotSupported } from './components/MobileNotSupported/MobileNotSupported';
 import { usePianoStore } from './stores/usePianoStore';
 import { useAudioStore } from './stores/useAudioStore';
 import { useSongLibraryStore } from './stores/useSongLibraryStore';
 import { getAudioEngine, autoInitializeAudio } from './components/AudioInitButton/AudioInitButton';
 import { chordToMidiNotes } from './utils/chordUtils';
+import { useIsMobilePhone } from './utils/deviceDetection';
 import { APP_NAME, APP_DEMO_VERSION } from './config/version';
 import './App.css';
 
@@ -25,6 +27,7 @@ function App() {
   const [selectedChordIndexInSection, setSelectedChordIndexInSection] = useState<number | undefined>(undefined);
   const [selectedSongChords, setSelectedSongChords] = useState<string[]>([]);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const isMobilePhone = useIsMobilePhone();
   const activeNotes = usePianoStore((state) => state.activeNotes);
   const audioInitialized = useAudioStore((state) => state.initialized);
 
@@ -137,6 +140,11 @@ function App() {
       setSelectedChordIndexInSection(undefined);
     }
   }, [selectedSongId]);
+
+  // Zobrazit zprávu o nepodpořeném zařízení na mobilních telefonech
+  if (isMobilePhone) {
+    return <MobileNotSupported />;
+  }
 
   return (
     <div className="app">

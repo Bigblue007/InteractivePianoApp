@@ -18,6 +18,19 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.3] - 2025-12-15
+
+### Přidáno
+- **Detekce mobilních telefonů** - Aplikace nyní detekuje mobilní telefony (ne tablety) a zobrazuje informační zprávu
+  - Komponenta `MobileNotSupported` s animovanou grafikou (klaviatura a hudební noty)
+  - Utilita `deviceDetection.ts` pro rozlišení mobilních telefonů od tabletů
+  - Zpráva doporučuje použít aplikaci na desktopu nebo tabletu
+
+### Změněno
+- **UX pro mobilní zařízení** - Na mobilních telefonech se místo aplikace zobrazí informační zpráva o nepodpořeném zařízení
+
+---
+
 ## [0.3.2] - 2025-12-14
 
 ### Přidáno
