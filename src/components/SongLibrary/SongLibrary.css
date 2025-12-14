@@ -21,3 +21,35 @@
   font-weight: 500;
 }
 
+/* Tablety - landscape - zmenšit fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .song-library {
+    padding: 0.4rem;
+  }
+  
+  .song-library-header {
+    margin-bottom: 0.4rem;
+  }
+  
+  .song-library-header h3 {
+    font-size: 0.95rem;
+  }
+}
+
+/* Tablety - portrait - normální fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 768px) and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .song-library {
+    padding: 0.5rem;
+  }
+  
+  .song-library-header {
+    margin-bottom: 0.5rem;
+  }
+  
+  .song-library-header h3 {
+    font-size: 1.1rem;
+  }
+}
+

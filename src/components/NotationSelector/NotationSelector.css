@@ -49,3 +49,43 @@
   text-overflow: ellipsis;
 }
 
+/* Tablety - landscape - zmenšit fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .notation-selector {
+    padding: 0.4rem;
+  }
+  
+  .notation-selector label {
+    font-size: 1rem;
+    width: 90px;
+  }
+  
+  .notation-select {
+    padding: 0.4rem;
+    font-size: 1rem;
+    min-width: 150px;
+  }
+}
+
+/* Tablety - portrait - zmenšené fonty a padding pro užší sekci */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 768px) and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .notation-selector {
+    padding: 0.3rem;
+  }
+  
+  .notation-selector label {
+    font-size: 0.9rem;
+    width: 70px; /* Zmenšeno pro užší sekci */
+    text-align: left; /* Zarovnat doleva */
+  }
+  
+  .notation-select {
+    padding: 0.3rem;
+    font-size: 0.85rem;
+    min-width: 0; /* Zrušit min-width omezení */
+    flex: 1; /* Zabere zbývající prostor */
+  }
+}
+

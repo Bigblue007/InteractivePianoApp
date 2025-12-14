@@ -48,6 +48,37 @@
 .key.black.highlighted {
   fill: rgba(255, 215, 0, 1); /* Stejná zlatá barva s opacity 1 */
   stroke: #333; /* Černý okraj */
+}
+
+/* Tablety - landscape - zmenšit klaviaturu */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .piano-keyboard-container {
+    max-height: 150px;
+    overflow: hidden;
+  }
+  
+  .piano-keyboard {
+    transform: scale(0.75);
+    transform-origin: top center;
+    width: 133.3%; /* Kompenzace pro scale (1 / 0.75) */
+  }
+}
+
+/* Tablety - portrait - normální velikost klaviatury */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 768px) and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .piano-keyboard-container {
+    max-height: 220px;
+    overflow: hidden;
+  }
+  
+  .piano-keyboard {
+    transform: scale(1);
+    transform-origin: top center;
+    width: 100%;
+  }
+}
   stroke-width: 2; /* Tenčí stroke */
   paint-order: stroke fill; /* Nejdřív stroke, pak fill - aby stroke zakryl čáru */
 }

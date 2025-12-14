@@ -161,3 +161,105 @@
   opacity: 0.6;
 }
 
+/* Tablety - landscape - zmenšit fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .chord-selector {
+    padding: 0.5rem;
+    gap: 0.4rem;
+  }
+  
+  .chord-selector h3 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .chord-selector-controls {
+    gap: 0.5rem;
+  }
+  
+  .control-group label {
+    font-size: 0.9rem;
+  }
+  
+  .root-select,
+  .type-select {
+    padding: 0.3rem;
+    font-size: 1rem;
+  }
+  
+  .chord-name-display {
+    font-size: 1.5rem;
+  }
+  
+  .chord-notes-info {
+    font-size: 0.9rem;
+  }
+  
+  .selected-chord-display {
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+  
+  .play-chord-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem;
+  }
+  
+  .transpose-button {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablety - portrait - normální fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 768px) and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .chord-selector {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .chord-selector h3 {
+    font-size: 1.235rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .chord-selector-controls {
+    gap: 0.75rem;
+  }
+  
+  .control-group label {
+    font-size: 1.04rem;
+  }
+  
+  .root-select,
+  .type-select {
+    padding: 0.4rem;
+    font-size: 1.17rem;
+  }
+  
+  .chord-name-display {
+    font-size: 1.95rem;
+  }
+  
+  .chord-notes-info {
+    font-size: 1rem;
+  }
+  
+  .selected-chord-display {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .play-chord-button {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .transpose-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+}
+

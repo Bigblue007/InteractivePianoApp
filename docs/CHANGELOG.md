@@ -18,6 +18,34 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.5] - 2025-12-15
+
+### Přidáno
+- **Optimalizace pro tablety** - Kompletní optimalizace zobrazení pro tablety v landscape i portrait módu
+  - Kompaktní zobrazení pro landscape mód (všechny funkce na jedné obrazovce bez scrollování)
+  - Normální velikosti pro portrait mód (využití celé výšky obrazovky)
+  - Přesné rozdělení top-section na třetiny šířky v portrait módu
+
+### Změněno
+- **Layout pro tablety v portrait módu**:
+  - Top-section rozdělena přesně na třetiny šířky obrazovky (nastavení, detekovaný akord, výběr akordu)
+  - Ovládací prvky v levé sekci zmenšeny a upraveny pro užší sekci
+  - MIDI connector má vertikální layout v portrait módu pro lepší využití prostoru
+  - Zmenšené fonty a paddingy pro kompaktnější zobrazení
+  - Zarovnání prvků doleva pro lepší čitelnost
+- **Scrollování na tabletech** - Povoleno scrollování v portrait módu pro přístup ke všem komponentám
+- **Klaviatura na tabletech** - Upravena výška a pozice klaviatury pro lepší využití prostoru
+  - Landscape: kompaktní zobrazení (poměr 1:4, scale 0.75)
+  - Portrait: normální zobrazení (poměr 1:6, scale 1.0)
+
+### Opraveno
+- **Překrývání sekcí** - Opraveno překrývání sekcí v portrait módu na tabletu
+  - Sekce nyní správně lícují v normálním flex flow
+  - Noty a knihovna písniček jsou správně umístěny pod klaviaturou
+- **Vyjíždění ovládacích prvků** - Opraveno vyjíždění ovládacích prvků mimo sekci v portrait módu
+
+---
+
 ## [0.3.4] - 2025-12-15
 
 ### Přidáno

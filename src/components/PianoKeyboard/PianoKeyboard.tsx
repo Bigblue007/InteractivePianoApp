@@ -51,8 +51,13 @@ export function PianoKeyboard({
   const containerPadding = 0; // Bez padding, protože jsme ho odstranili
   const availableWidth = windowWidth - containerPadding;
   
+  // Pro tablety použít menší poměr výšky pouze v landscape (kompaktnější klaviatura)
+  const isTablet = windowWidth >= 768 && windowWidth <= 1024;
+  const isTabletPortrait = isTablet && window.innerHeight > window.innerWidth;
+  const KEY_HEIGHT_RATIO = (isTablet && !isTabletPortrait) ? 4 : 6; // 1:4 pro tablety landscape, 1:6 pro desktop a tablety portrait
+  
   const KEY_WIDTH = Math.floor(availableWidth / whiteKeysCount);
-  const KEY_HEIGHT = Math.floor(KEY_WIDTH * 6); // Poměr šířka:výška pro klávesu (přibližně 1:6)
+  const KEY_HEIGHT = Math.floor(KEY_WIDTH * KEY_HEIGHT_RATIO);
   const BLACK_KEY_WIDTH = Math.floor(KEY_WIDTH * 0.6); // 60% šířky bílé klávesy
   const BLACK_KEY_HEIGHT = Math.floor(KEY_HEIGHT * 0.58); // 58% výšky bílé klávesy
   

@@ -99,3 +99,103 @@
   font-weight: 400;
 }
 
+/* Tablety - landscape - zmenšit fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1024px) and (min-aspect-ratio: 4/3) {
+  .chord-progression {
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+  
+  .chord-item {
+    padding: 0.3rem 0.5rem;
+    gap: 0.3rem;
+  }
+  
+  .chord-number {
+    min-width: 1.1rem;
+    height: 1.1rem;
+    font-size: 0.65rem;
+  }
+  
+  .chord-name {
+    font-size: 0.85rem;
+  }
+  
+  .chord-progression-sections {
+    gap: 0.5rem;
+  }
+  
+  .chord-section {
+    gap: 0.4rem;
+  }
+  
+  .section-header {
+    padding: 0.3rem 0.5rem;
+    gap: 0.4rem;
+  }
+  
+  .section-type {
+    font-size: 0.75rem;
+  }
+  
+  .section-label {
+    font-size: 0.7rem;
+  }
+  
+  .chord-progression-empty {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablety - portrait - normální fonty a padding */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+       (min-width: 768px) and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .chord-progression {
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  
+  .chord-item {
+    padding: 0.4rem 0.6rem;
+    gap: 0.4rem;
+  }
+  
+  .chord-number {
+    min-width: 1.3rem;
+    height: 1.3rem;
+    font-size: 0.75rem;
+  }
+  
+  .chord-name {
+    font-size: 0.95rem;
+  }
+  
+  .chord-progression-sections {
+    gap: 0.75rem;
+  }
+  
+  .chord-section {
+    gap: 0.5rem;
+  }
+  
+  .section-header {
+    padding: 0.4rem 0.6rem;
+    gap: 0.5rem;
+  }
+  
+  .section-type {
+    font-size: 0.85rem;
+  }
+  
+  .section-label {
+    font-size: 0.75rem;
+  }
+  
+  .chord-progression-empty {
+    padding: 2rem;
+    font-size: 1rem;
+  }
+}
+
