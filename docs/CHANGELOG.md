@@ -18,6 +18,16 @@ a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
 ---
 
+## [0.3.6] - 2025-12-15
+
+### Opraveno
+- **Sjednocení přehrávání akordů** - Opravena délka přehrávání akordů v knihovně písniček
+  - Velocity sjednocena na 127 (maximální) pro konzistenci s výběrem akordu
+  - Odstraněno zbytečné volání `noteOff` před `noteOn`, které způsobovalo krátké přerušení
+  - Přehrávání akordů je nyní stejně dlouhé ve výběru akordu i v knihovně písniček
+
+---
+
 ## [0.3.5] - 2025-12-15
 
 ### Přidáno

@@ -76,14 +76,10 @@ function App() {
       return;
     }
 
-    // Zastavit všechny aktuálně hrané noty
+    // Přehrát nový akord (stejně jako v ChordSelector - velocity 127 pro konzistenci)
+    // Nezastavujeme předchozí noty před přehráním, aby nedošlo k přerušení
     midiNotes.forEach((midi) => {
-      audioEngine.noteOff(midi);
-    });
-
-    // Přehrát nový akord
-    midiNotes.forEach((midi) => {
-      audioEngine.noteOn(midi, 100);
+      audioEngine.noteOn(midi, 127);
     });
   }, [audioInitialized, selectedSongChords]);
 
