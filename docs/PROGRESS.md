@@ -15,4 +15,4 @@
 ## Pending Documentation/Commits
 - [x] Vyřešen a zdokumentován instalační problém s Electron binárkami na Windows (symlinky a path.txt)
 - [x] Commit celé migrační větve `desktop/electron-migration` (skripty, main, preload, config, UI, styles, tsconfigs, ikona, dokumentace)
-- [ ] Commit integrace SF2 soundfontů (nástrojový selektor, WASM syntetizér)
+- [x] Commit integrace SF2 soundfontů (nástrojový selektor, WASM syntetizér)
