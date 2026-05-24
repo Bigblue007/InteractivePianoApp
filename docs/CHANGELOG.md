@@ -11,6 +11,18 @@ Všechny významné změny v projektu budou zdokumentovány v tomto souboru.
 Formát je založen na [Keep a Changelog](https://keepachangelog.com/cs/1.0.0/),
 a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [0.5.0] - 2026-05-24
+
+### Přidáno
+- **Integrace lokálních SF2 Soundfontů**: Plnohodnotná podpora načítání a syntézy vlastních `.sf2` souborů (jako `Organ B3`, `SC88 E.Piano`, `Piano (sf2)`, `Roland Rock Organ`) ze složky `public/soundfonts/`.
+- **Integrace SpessaSynth (WASM)**: Nahrazení chybové knihovny `read-wasm-sf2` za robustní knihovnu `spessasynth_lib` běžící v AudioWorklet vlákně (`spessasynth_processor.min.js`). To vyřešilo veškeré problémy s laděním (pitch-shifting chyby v nižších oktávách) a vynecháváním vzorků.
+- **Kategorizace v UI selektoru**: Přehledné rozdělení nástrojů v dropdownu pomocí HTML `<optgroup>` do tří skupin: *Syntetické (Synth)*, *Soundfonty (SF2)* a *Akustické (Samples)*.
+
+### Změněno
+- **SoundFontEngine**: Kompletní refaktoring přehrávání soundfontů. Alokace hlasů, syntéza i zpracování sustain pedálu (jako standardní MIDI CC 64) jsou nyní delegovány přímo na SpessaSynth procesor.
+
+---
+
 ## [0.4.0] - 2026-05-24
 
 ### Přidáno
