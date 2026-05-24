@@ -324,6 +324,14 @@ Pro Windows se generuje instalátor typu **NSIS** (.exe).
 npm run package:win
 ```
 
+> [!WARNING]
+> **Chyba symbolických odkazů (Symbolic Links Error):**
+> Při balení na Windows může dojít k chybě `ERROR: Cannot create symbolic link` (Klient není držitelem požadovaného oprávnění) při rozbalování pomocných balíčků jako `winCodeSign`. K tomu dochází, protože Windows standardně nepovoluje vytváření symbolických odkazů bez administrátorských práv.
+>
+> **Možná řešení:**
+> 1. **Zapnout Vývojářský režim (Developer Mode):** Jděte do *Nastavení systému* -> *Systém* -> *Pro vývojáře* (Settings -> System -> For developers) a zapněte *Vývojářský režim* (Developer Mode). To umožní vytváření symbolických odkazů běžným uživatelům.
+> 2. **Spustit jako administrátor:** Spusťte terminál (PowerShell/CMD) nebo VS Code jako Administrátor a poté spusťte `npm run package:win`.
+
 *Výsledek:* V adresáři `release/` vznikne soubor `Harmonia Desktop Setup [verze].exe`. Uživatel jej spustí a nainstaluje aplikaci, která automaticky vytvoří zástupce na ploše a umožní zvolit instalační adresář.
 
 #### 2. Linux (Sekundární cílová platforma)

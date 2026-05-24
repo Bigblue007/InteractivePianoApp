@@ -167,14 +167,14 @@ export const pianoAcousticPreset: InstrumentPreset = {
   })(),
   pedalSamples: {
     PD: [
-      '/samples/piano-acoustic/TKI_Pedal_PD_RR1.mp3',
-      '/samples/piano-acoustic/TKI_Pedal_PD_RR2.mp3',
-      '/samples/piano-acoustic/TKI_Pedal_PD_RR3.mp3',
+      '/samples/piano-acoustic/TKI_PD_RR1.mp3',
+      '/samples/piano-acoustic/TKI_PD_RR2.mp3',
+      '/samples/piano-acoustic/TKI_PD_RR3.mp3',
     ],
     PU: [
-      '/samples/piano-acoustic/TKI_Pedal_PU_RR1.mp3',
-      '/samples/piano-acoustic/TKI_Pedal_PU_RR2.mp3',
-      '/samples/piano-acoustic/TKI_Pedal_PU_RR3.mp3',
+      '/samples/piano-acoustic/TKI_PU_RR1.mp3',
+      '/samples/piano-acoustic/TKI_PU_RR2.mp3',
+      '/samples/piano-acoustic/TKI_PU_RR3.mp3',
     ],
   },
 };

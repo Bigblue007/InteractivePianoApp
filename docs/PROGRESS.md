@@ -12,4 +12,5 @@
 (všechny fáze dokončeny)
 
 ## Pending Documentation/Commits
-- [ ] Commit celé migrační větve `desktop/electron-migration` (skripty, main, preload, config, UI, styles, tsconfigs, ikona)
+- [x] Vyřešen a zdokumentován instalační problém s Electron binárkami na Windows (symlinky a path.txt)
+- [x] Commit celé migrační větve `desktop/electron-migration` (skripty, main, preload, config, UI, styles, tsconfigs, ikona, dokumentace)
