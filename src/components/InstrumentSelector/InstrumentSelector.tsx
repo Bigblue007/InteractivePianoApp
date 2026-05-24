@@ -38,6 +38,47 @@ export function InstrumentSelector() {
       });
     }
     
+    // Přidat custom SF2 soundfonty
+    const pianoSf2Exists = soundfonts.some((sf) => sf.id === 'piano-sf2');
+    if (!pianoSf2Exists) {
+      addSoundFont({
+        id: 'piano-sf2',
+        name: 'Piano (sf2)',
+        url: '/soundfonts/Piano.SF2',
+        loaded: false,
+      });
+    }
+
+    const sc88EpianoExists = soundfonts.some((sf) => sf.id === 'sc88-epiano');
+    if (!sc88EpianoExists) {
+      addSoundFont({
+        id: 'sc88-epiano',
+        name: 'SC88 E.Piano',
+        url: '/soundfonts/SC88 E.Piano.SF2',
+        loaded: false,
+      });
+    }
+
+    const organB3Exists = soundfonts.some((sf) => sf.id === 'organ-b3');
+    if (!organB3Exists) {
+      addSoundFont({
+        id: 'organ-b3',
+        name: 'Organ B3',
+        url: '/soundfonts/Organ_B3.SF2',
+        loaded: false,
+      });
+    }
+
+    const rolandRockOrganExists = soundfonts.some((sf) => sf.id === 'roland-rock-organ');
+    if (!rolandRockOrganExists) {
+      addSoundFont({
+        id: 'roland-rock-organ',
+        name: 'Roland Rock Organ',
+        url: '/soundfonts/Roland Rock Organ.SF2',
+        loaded: false,
+      });
+    }
+    
     // Zkontrolovat, zda už existuje piano-acoustic (sampler) - přidat jako poslední
     const pianoAcousticExists = soundfonts.some((sf) => sf.id === 'piano-acoustic');
     if (!pianoAcousticExists) {
@@ -71,8 +112,8 @@ export function InstrumentSelector() {
         }
       });
       
-      // Nastavit loading state pro sampler nástroje (akustické piano)
-      if (selectedSoundFont.url.startsWith('preset:')) {
+      // Nastavit loading state pro sampler / SF2 nástroje
+      if (selectedSoundFont.url.startsWith('preset:') || selectedSoundFont.url.endsWith('.SF2') || selectedSoundFont.url.endsWith('.sf2')) {
         setLoadingSoundFont(selectedSoundFont.id);
       }
       
@@ -101,8 +142,8 @@ export function InstrumentSelector() {
       const audioEngine = getAudioEngine();
       const selectedSoundFont = soundfonts.find((sf) => sf.id === id);
       if (audioEngine && selectedSoundFont) {
-        // Nastavit loading state pro sampler nástroje (akustické piano)
-        if (selectedSoundFont.url.startsWith('preset:')) {
+        // Nastavit loading state pro sampler / SF2 nástroje
+        if (selectedSoundFont.url.startsWith('preset:') || selectedSoundFont.url.endsWith('.SF2') || selectedSoundFont.url.endsWith('.sf2')) {
           setLoadingSoundFont(id);
         }
         
@@ -122,11 +163,15 @@ export function InstrumentSelector() {
     return null;
   }
 
-  // Seřadit nástroje: Piano (synth) první, DX7 Modern (synth) druhé, Piano (Acoustic) poslední
+  // Seřadit nástroje: Piano (synth) první, DX7 Modern (synth) druhé, SF2 nástroje uprostřed, Piano (Acoustic) poslední
   // Definovat explicitní pořadí pro garantované řazení
   const instrumentOrder: Record<string, number> = {
     'piano': 1,           // Piano (synth) první
     'dx7': 2,             // DX7 Modern (synth) druhé
+    'piano-sf2': 3,
+    'sc88-epiano': 4,
+    'organ-b3': 5,
+    'roland-rock-organ': 6,
     'piano-acoustic': 10, // Piano (Acoustic) poslední
   };
   

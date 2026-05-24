@@ -22,7 +22,7 @@
     "electron-updater": "^6.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "read-wasm-sf2": "^1.0.0",
+    "spessasynth_lib": "^4.3.4",
     "vexflow": "^4.0.3",
     "zustand": "^4.4.7"
   },

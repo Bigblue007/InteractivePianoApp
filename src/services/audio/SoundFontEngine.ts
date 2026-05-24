@@ -2,12 +2,13 @@ import { AudioContextManager } from './AudioContextManager';
 import { SoundFontEngine, AudioVoice } from './types';
 import { SimpleSampler } from './SimpleSampler';
 import { getPreset } from '../../config/instrumentPresets';
+import { WorkletSynthesizer } from 'spessasynth_lib';
 
 /**
  * Engine pro přehrávání sf2 soundfontů
  * Pro MVP používá jednoduchý přístup s možností rozšíření o TinySoundFont WASM
  */
-export type InstrumentType = 'piano' | 'dx7';
+export type InstrumentType = 'piano' | 'dx7' | 'sf2';
 
 export class SimpleSoundFontEngine implements SoundFontEngine {
   private audioContext: AudioContext;
@@ -17,12 +18,15 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
   private activeGainNodes: Map<number, GainNode[]> = new Map();
   private activeTimeouts: Map<number, ReturnType<typeof setTimeout>> = new Map();
   // @ts-expect-error - Připraveno pro budoucí použití s TinySoundFont WASM
-  private soundFontData: ArrayBuffer | null = null;
   private loaded: boolean = false;
   private sustain: boolean = false;
   private sustainPool: Set<number> = new Set();
   private instrumentType: InstrumentType = 'piano'; // Výchozí typ nástroje
   private sampler: SimpleSampler | null = null; // Sampler pro sampler-based nástroje
+  
+  // SpessaSynth engine state
+  private static workletModuleLoaded = false;
+  private synth: WorkletSynthesizer | null = null;
 
   constructor() {
     this.audioContext = AudioContextManager.getContext();
@@ -78,7 +82,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
         return;
       }
       
-      // Načíst skutečný soundfont (pokud by se někdy použil)
+      // Načíst skutečný soundfont
       // Zastavit sampler, pokud běží
       if (this.sampler) {
         this.sampler.dispose();
@@ -97,11 +101,43 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
         }
         soundFontBuffer = await response.arrayBuffer();
       }
-      
+
+      // 1. Zaregistrovat AudioWorklet procesor, pokud ještě není načtený
+      if (!SimpleSoundFontEngine.workletModuleLoaded) {
+        let processorUrl = './spessasynth_processor.min.js';
+        
+        // Na webu s base path musíme přidat base path, pokud existuje
+        if (typeof window !== 'undefined' && !window.electronAPI) {
+          // @ts-ignore
+          const basePath = (import.meta.env && import.meta.env.BASE_URL) || '/';
+          if (basePath !== '/') {
+            processorUrl = basePath + 'spessasynth_processor.min.js';
+          }
+        }
+        
+        console.log(`Načítám SpessaSynth AudioWorklet z: ${processorUrl}`);
+        await this.audioContext.audioWorklet.addModule(processorUrl);
+        SimpleSoundFontEngine.workletModuleLoaded = true;
+      }
+
+      // 2. Zastavit a zničit předchozí syntetizér, pokud existuje
+      if (this.synth) {
+        this.synth.destroy();
+        this.synth = null;
+      }
+
+      // 3. Vytvořit novou instanci WorkletSynthesizer a připojit ji do grafu
+      this.synth = new WorkletSynthesizer(this.audioContext);
+      this.synth.connect(this.masterGain);
+
+      // 4. Nahrát soundfont do Sound Bank Manageru
+      await this.synth.soundBankManager.addSoundBank(soundFontBuffer, "main");
+      await this.synth.isReady;
+
       this.soundFontData = soundFontBuffer;
-      this.instrumentType = 'piano'; // Výchozí pro soundfont
+      this.instrumentType = 'sf2';
       this.loaded = true;
-      console.log('Soundfont načten (pro plnou podporu sf2 použijte TinySoundFont WASM)');
+      console.log(`Soundfont .sf2 načten a inicializován v SpessaSynth: ${url}`);
     } catch (error) {
       console.error('Chyba při načítání soundfontu:', error);
       throw error;
@@ -120,6 +156,14 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
     // Pokud je sampler načten, použít sampler
     if (this.sampler) {
       this.sampler.noteOn(midi, velocity);
+      return;
+    }
+
+    // Pokud je to SF2 nástroj, přehrát pomocí SpessaSynth
+    if (this.instrumentType === 'sf2') {
+      if (this.synth) {
+        this.synth.noteOn(0, midi, velocity);
+      }
       return;
     }
 
@@ -289,6 +333,8 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
     
     this.activeTimeouts.set(midi, timeout);
   }
+
+// Staré WASM renderovací pomocné metody byly odstraněny, SpessaSynth je plně nahrazuje.
 
   /**
    * Spustí notu s DX7-style elektrickým pianem (FM synthesis)
@@ -548,13 +594,20 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       return;
     }
 
-    // Jinak použít syntetický engine
+    // Pro SF2 nástroj předat event přímo do SpessaSynth
+    if (this.instrumentType === 'sf2') {
+      if (this.synth) {
+        this.synth.noteOff(0, midi);
+      }
+      return;
+    }
+
     if (this.sustain) {
       this.sustainPool.add(midi);
       return;
     }
 
-    // Okamžitě zastavit notu
+    // Okamžitě zastavit notu (syntetický engine)
     this.stopNoteImmediately(midi);
   }
 
@@ -568,8 +621,17 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       return;
     }
 
-    // Jinak použít syntetický engine
     this.sustain = sustain;
+
+    // Pro SF2 nástroj předat sustain jako MIDI CC 64
+    if (this.instrumentType === 'sf2') {
+      if (this.synth) {
+        this.synth.controllerChange(0, 64, sustain ? 127 : 0);
+      }
+      return;
+    }
+
+    // Jinak použít syntetický engine
     if (!sustain) {
       // Uvolnit všechny noty ze sustain poolu - okamžitě zastavit
       for (const midi of this.sustainPool) {
@@ -587,6 +649,12 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
     if (this.sampler) {
       this.sampler.dispose();
       this.sampler = null;
+    }
+
+    // Zničit SpessaSynth instanci
+    if (this.synth) {
+      this.synth.destroy();
+      this.synth = null;
     }
 
     // Zastavit všechny noty okamžitě

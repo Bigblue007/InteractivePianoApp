@@ -7,6 +7,7 @@
 - [x] Fáze 3: Sample Library Manager
 - [x] Fáze 4: UI úpravy pro desktop
 - [x] Fáze 6: Build + packaging + testování
+- [x] Integrace lokálních SF2 soundfontů přes WASM (read-wasm-sf2)
 
 ## Plánované úkoly
 (všechny fáze dokončeny)
@@ -14,3 +15,4 @@
 ## Pending Documentation/Commits
 - [x] Vyřešen a zdokumentován instalační problém s Electron binárkami na Windows (symlinky a path.txt)
 - [x] Commit celé migrační větve `desktop/electron-migration` (skripty, main, preload, config, UI, styles, tsconfigs, ikona, dokumentace)
+- [ ] Commit integrace SF2 soundfontů (nástrojový selektor, WASM syntetizér)
