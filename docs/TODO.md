@@ -51,7 +51,23 @@
 
 ---
 
-### 3. ✅ Doladit barvy podbarvených černých kláves
+### 3. Odstranění latence a zpoždění u akustických samplů
+**Popis:** Při přehrávání akustických samplů v `SimpleSampler` dochází k občasnému zpoždění tónu. Hraní přes MIDI klavír (např. Yamaha P-225) tak vykazuje nepříjemnou latenci a není responzivní.
+
+**Požadavky:**
+- Prověřit a optimalizovat inicializaci `AudioContext` (např. vynutit `latencyHint: 'interactive'`).
+- Prověřit dekódování a ořezávání počátečního ticha samplů v `SampleLoader.ts` a `NativeSampleLoader.ts` (jestli se ořezání provádí správně a nezůstává tam ticho).
+- Vyřešit, zda latenci nezpůsobuje zpoždění při čtení souborů z disku přes IPC v Electronu během přehrávání (zvážit možnost přednačtení všech samplů do paměti RAM předem, aby se nečetly asynchronně z disku při noteOn).
+
+**Soubory k úpravě:**
+- `src/services/audio/SimpleSampler.ts`
+- `src/services/audio/SampleLoader.ts`
+- `src/services/audio/NativeSampleLoader.ts`
+- `src/services/audio/AudioContextManager.ts`
+
+---
+
+### 4. ✅ Doladit barvy podbarvených černých kláves
 **Status:** ✅ **HOTOVÉ** (Release 0.2.1)
 
 **Problém:** Uprostřed podbarvené "černé" klávesy je vidět čára (pravděpodobně border nebo outline).
@@ -68,7 +84,7 @@
 
 ---
 
-### 4. ✅ Vypínání podbarvení vybraného akordu při hraní
+### 5. ✅ Vypínání podbarvení vybraného akordu při hraní
 **Status:** ✅ **HOTOVÉ** (Release 0.2.1)
 
 **Popis:** Automaticky vypnout podbarvení vybraného akordu, když uživatel zahraje stejný akord na kontroleru nebo klávesnici.
@@ -86,12 +102,12 @@
 
 ## Střední priorita
 
-### 5. Vylepšení UI pro Chord Inversions
+### 6. Vylepšení UI pro Chord Inversions
 - Po implementaci základní funkce vylepšit UI
 - Možná vizualizace obratů na klaviatuře
 - Tooltips s vysvětlením obratů
 
-### 6. Keyboard shortcuts
+### 7. Keyboard shortcuts
 - Přidat keyboard shortcuts pro běžné akce
 - Např. Space pro play/pause, čísla pro rychlý výběr akordů
 
@@ -99,7 +115,7 @@
 
 ## Nízká priorita
 
-### 7. Pokročilé mapování klávesnice
+### 8. Pokročilé mapování klávesnice
 - Podpora více layoutů
 - Možnost custom mapování
 - Uložení preferencí do localStorage
@@ -108,18 +124,23 @@
 
 ## Desktop-specific úkoly (Harmonia Desktop)
 
-### 8. Dokončit stahování a instalaci sample balíčků
+### 9. Dokončit stahování a instalaci sample balíčků
 - Implementovat reálné stahování ZIP archivů z GitHub Releases v main procesu (pomocí Node `https` nebo `axios`).
 - Integrovat bezpečné rozbalování ZIP souborů na disk (např. pomocí čistě JS knihovny `yauzl` nebo `adm-zip`).
 - Implementovat ověřování SHA256 kontrolních součtů po stažení.
 
-### 9. Správa úložiště a nastavení složky
+### 10. Správa úložiště a nastavení složky
 - Přidat do UI možnost vybrat libovolný adresář pro ukládání velkých samplů (např. na externí SSD disk).
 - Zobrazit v `SampleManager` grafické využití diskového prostoru.
 
-### 10. Auto-updates
+### 11. Auto-updates
 - Dokončit propojení s `electron-updater` a nastavit automatickou kontrolu nových verzí na pozadí.
 - Zobrazit uživateli upozornění na novou verzi a provést tichou aktualizaci.
+
+### 12. Podpora a integrace SFZ (Splendid Grand Piano)
+- Prozkoumat možnost integrace vysoce kvalitního křídla Steinway z projektu [SplendidGrandPiano](https://github.com/sfzinstruments/SplendidGrandPiano).
+- Otestovat konverzi SFZ do formátu SF2 přes program Polyphone pro přímé využití v [SimpleSoundFontEngine](file:///d:/Projekty/InteractivePianoApp/src/services/audio/SoundFontEngine.ts) bez změn kódu.
+- Alternativně navrhnout odlehčený parser `.sfz` souborů a region sampler v TypeScriptu pro přímé čtení z disku.
 
 ---
 
