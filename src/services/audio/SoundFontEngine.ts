@@ -85,11 +85,20 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
         this.sampler = null;
       }
       
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Nepodařilo se načíst soundfont: ${response.statusText}`);
+      let soundFontBuffer: ArrayBuffer;
+      if (typeof window !== 'undefined' && window.electronAPI) {
+        const cleanPath = url.replace(/^\//, '');
+        const absPath = await window.electronAPI.resolveResourcePath(cleanPath);
+        soundFontBuffer = await window.electronAPI.readSampleFile(absPath);
+      } else {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Nepodařilo se načíst soundfont: ${response.statusText}`);
+        }
+        soundFontBuffer = await response.arrayBuffer();
       }
-      this.soundFontData = await response.arrayBuffer();
+      
+      this.soundFontData = soundFontBuffer;
       this.instrumentType = 'piano'; // Výchozí pro soundfont
       this.loaded = true;
       console.log('Soundfont načten (pro plnou podporu sf2 použijte TinySoundFont WASM)');

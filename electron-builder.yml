@@ -1,0 +1,33 @@
+appId: com.harmonia.desktop
+productName: Harmonia Desktop
+forceCodeSigning: false
+
+directories:
+  output: release
+
+extraResources:
+  - from: public/samples/
+    to: samples
+    filter: ["**/*"]
+  - from: public/soundfonts/
+    to: soundfonts
+    filter: ["**/*"]
+
+win:
+  target: nsis
+  icon: resources/icon.png
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+
+linux:
+  target: AppImage
+  icon: resources/icon.png
+  category: Audio
+
+publish:
+  provider: github
+  owner: Bigblue007
+  repo: InteractivePianoApp

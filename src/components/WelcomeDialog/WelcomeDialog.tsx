@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAudioStore } from '../../stores/useAudioStore';
 import { autoInitializeAudio } from '../AudioInitButton/AudioInitButton';
 import { APP_NAME, APP_DEMO_VERSION } from '../../config/version';
@@ -12,6 +12,13 @@ export function WelcomeDialog({ onClose }: WelcomeDialogProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const audioInitialized = useAudioStore((state) => state.initialized);
+
+  useEffect(() => {
+    const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
+    if (isElectron && !audioInitialized && !loading) {
+      handlePlay();
+    }
+  }, [audioInitialized]);
 
   const handlePlay = async () => {
     if (audioInitialized) {

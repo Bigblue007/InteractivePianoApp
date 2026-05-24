@@ -290,3 +290,57 @@ Pro rychlý start doporučuji **Vercel** - je to nejjednodušší a nejrychlejš
 
 Pro dlouhodobé řešení s plnou kontrolou doporučuji **GitHub Pages** s automatickým deployment workflow.
 
+---
+
+## Distribuce desktopové verze (Harmonia Desktop)
+
+Desktopová verze se distribuuje jako samostatný spustitelný soubor pro Windows a Linux a je založena na technologii **Electron**. K sestavení a balení se používá `electron-builder` ve spojení s `electron-vite`.
+
+### Sestavení a lokální spuštění
+
+Pro vývoj a testování lokální desktopové verze použijte:
+
+```bash
+# Spuštění vývojového prostředí Electronu s HMR (Hot Module Replacement)
+npm run dev
+```
+
+Pro standardní otestování produkčního sestavení:
+
+```bash
+# Sestavení aplikace (výstupy v /out)
+npm run build
+```
+
+### Balení a distribuce (Packaging)
+
+Pro vytvoření instalátorů pro koncové uživatele slouží následující příkazy:
+
+#### 1. Windows (Primární cílová platforma)
+Pro Windows se generuje instalátor typu **NSIS** (.exe).
+
+```bash
+# Vytvoření instalátoru pro Windows (výstup v /release)
+npm run package:win
+```
+
+*Výsledek:* V adresáři `release/` vznikne soubor `Harmonia Desktop Setup [verze].exe`. Uživatel jej spustí a nainstaluje aplikaci, která automaticky vytvoří zástupce na ploše a umožní zvolit instalační adresář.
+
+#### 2. Linux (Sekundární cílová platforma)
+Pro Linux se generuje balíček typu **AppImage**, který je spustitelný na většině distribucí bez instalace.
+
+```bash
+# Vytvoření balíčku pro Linux (výstup v /release)
+npm run package:linux
+```
+
+*Výsledek:* V adresáři `release/` vznikne soubor `.AppImage`, který stačí označit jako spustitelný a spustit.
+
+### Architektura distribuce prostředků (Assets)
+
+Vzhledem k tomu, že desktopová verze používá velké zvukové soubory (samply a soundfonty), jsou tyto prostředky při balení odděleny od hlavního kódu aplikace:
+
+- **extraResources:** `electron-builder` kopíruje složky `public/samples/` a `public/soundfonts/` přímo do složky `resources/` v instalátoru (mimo hlavní asar archiv).
+- **Lokální přístup:** Aplikace v desktopovém režimu tyto soubory nečte přes HTTP fetch, ale přímo z disku přes Node.js `fs` most (vystavený v preload scriptu). To zaručuje nulovou síťovou latenci a fungování kompletně offline.
+
+

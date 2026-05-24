@@ -1,5 +1,6 @@
 import { AudioContextManager } from './AudioContextManager';
 import { SampleLoader } from './SampleLoader';
+import { NativeSampleLoader } from './NativeSampleLoader';
 import { InstrumentPreset, VelocityLayer, SampleConfig } from '../../config/instrumentPresets';
 
 interface ActiveVoice {
@@ -22,7 +23,7 @@ interface ActiveVoice {
 export class SimpleSampler {
   private audioContext: AudioContext;
   private masterGain: GainNode;
-  private sampleLoader: SampleLoader;
+  private sampleLoader: SampleLoader | NativeSampleLoader;
   private loadedSamples: Map<string, AudioBuffer> = new Map();
   private activeVoices: Map<number, ActiveVoice[]> = new Map();
   private sustain: boolean = false;
@@ -39,7 +40,11 @@ export class SimpleSampler {
     this.masterGain = this.audioContext.createGain();
     this.masterGain.connect(this.audioContext.destination);
     this.masterGain.gain.value = 0.7;
-    this.sampleLoader = SampleLoader.getInstance();
+    
+    const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
+    this.sampleLoader = isElectron
+      ? NativeSampleLoader.getInstance()
+      : SampleLoader.getInstance();
     
     // Lookahead scheduler je vypnutý - samply se přehrávají okamžitě
   }

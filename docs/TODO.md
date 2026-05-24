@@ -106,7 +106,25 @@
 
 ---
 
-*Poslední aktualizace: 13. 12. 2025*
+## Desktop-specific úkoly (Harmonia Desktop)
+
+### 8. Dokončit stahování a instalaci sample balíčků
+- Implementovat reálné stahování ZIP archivů z GitHub Releases v main procesu (pomocí Node `https` nebo `axios`).
+- Integrovat bezpečné rozbalování ZIP souborů na disk (např. pomocí čistě JS knihovny `yauzl` nebo `adm-zip`).
+- Implementovat ověřování SHA256 kontrolních součtů po stažení.
+
+### 9. Správa úložiště a nastavení složky
+- Přidat do UI možnost vybrat libovolný adresář pro ukládání velkých samplů (např. na externí SSD disk).
+- Zobrazit v `SampleManager` grafické využití diskového prostoru.
+
+### 10. Auto-updates
+- Dokončit propojení s `electron-updater` a nastavit automatickou kontrolu nových verzí na pozadí.
+- Zobrazit uživateli upozornění na novou verzi a provést tichou aktualizaci.
+
+---
+
+*Poslední aktualizace: 2026-05-24*
+
 
 
 

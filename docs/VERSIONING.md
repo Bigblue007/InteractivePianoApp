@@ -10,7 +10,7 @@ Projekt používá [Semantic Versioning](https://semver.org/lang/cs/) ve formát
 - **MINOR** (0.1.0) - Nové funkce, zpětně kompatibilní
 - **PATCH** (0.0.1) - Opravy bugů, zpětně kompatibilní
 
-Aktuální verze: **0.1.0** (MVP)
+Aktuální verze: **0.4.0** (Electron Desktop)
 
 ## Workflow pro vytvoření release
 

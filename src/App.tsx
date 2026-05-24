@@ -17,6 +17,7 @@ import { getAudioEngine, autoInitializeAudio } from './components/AudioInitButto
 import { chordToMidiNotes } from './utils/chordUtils';
 import { useIsMobilePhone } from './utils/deviceDetection';
 import { APP_NAME, APP_DEMO_VERSION } from './config/version';
+import { SampleManager } from './components/SampleManager/SampleManager';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   const [selectedChordIndexInSection, setSelectedChordIndexInSection] = useState<number | undefined>(undefined);
   const [selectedSongChords, setSelectedSongChords] = useState<string[]>([]);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [showSampleManager, setShowSampleManager] = useState(false);
   const [skipMobileWarning, setSkipMobileWarning] = useState(false);
   const isMobilePhone = useIsMobilePhone();
   const activeNotes = usePianoStore((state) => state.activeNotes);
@@ -150,6 +152,14 @@ function App() {
       {showWelcomeDialog && (
         <WelcomeDialog onClose={() => setShowWelcomeDialog(false)} />
       )}
+      {showSampleManager && (
+        <div className="sample-manager-modal-overlay" onClick={() => setShowSampleManager(false)}>
+          <div className="sample-manager-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="sample-manager-modal-close-btn" onClick={() => setShowSampleManager(false)}>×</button>
+            <SampleManager />
+          </div>
+        </div>
+      )}
       <main>
         <div className="top-section-wrapper">
           <div className="app-header-inline">
@@ -158,6 +168,12 @@ function App() {
               <h1>{APP_NAME}</h1>
               <div className="app-demo-version">{APP_DEMO_VERSION}</div>
             </div>
+            <button 
+              className="btn-open-sample-manager" 
+              onClick={() => setShowSampleManager(true)}
+            >
+              {typeof window !== 'undefined' && window.electronAPI ? '🎹 Spravovat samply' : '🎹 Zvukové knihovny'}
+            </button>
           </div>
           <div className="top-section">
             <div className="left-panel top-panel">

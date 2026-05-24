@@ -11,16 +11,18 @@ Všechny významné změny v projektu budou zdokumentovány v tomto souboru.
 Formát je založen na [Keep a Changelog](https://keepachangelog.com/cs/1.0.0/),
 a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
 
-## [Unreleased]
+## [0.4.0] - 2026-05-24
 
 ### Přidáno
-- (Zde budou nové funkce, které ještě nejsou v release)
+- **Migrace na Electron desktop (Harmonia Desktop)**: Přetvoření webové aplikace na desktopovou aplikaci s přímým přístupem k souborovému systému a optimalizovaným zvukem.
+- **Nativní Sample Loader**: Implementace `NativeSampleLoader` pro přímé asynchronní načítání a dekódování vzorků (MP3 a SF2) z disku přes bezpečný IPC bridge.
+- **Správce zvukových knihoven**: Vytvořena vizuálně atraktivní komponenta `SampleManager` v dark/glassmorphic stylu pro správu, stahování a instalaci doplňujících sample setů (např. Salamander Grand Piano) do `%APPDATA%`.
+- **Automatická inicializace audia**: V desktopové verzi se zvukový engine inicializuje okamžitě při startu bez nutnosti interakce uživatele.
+- **DevOps a Build systém**: Integrace `electron-vite` pro kompilaci hlavního, preload a renderer procesu a `electron-builder` pro sestavování instalátorů (NSIS pro Windows, AppImage pro Linux). Přidán prémiový aplikační ikonový asset.
 
 ### Změněno
-- (Zde budou změny v existujících funkcích)
-
-### Opraveno
-- (Zde budou opravy bugů)
+- **SoundFontEngine & SimpleSampler**: Upraveny pro detekci prostředí a automatické přepínání mezi webovým (HTTP fetch) a nativním desktopovým (disk fs IPC) načítáním.
+- **Struktura projektu**: Rozšíření o main a preload skripty, oddělené tsconfig soubory a globální typové deklarace pro Electron IPC rozhraní.
 
 ---
 

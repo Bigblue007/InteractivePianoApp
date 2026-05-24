@@ -510,8 +510,15 @@ Aplikace je připravena na rozšíření o další funkce, jako je knihovna pís
 - **Oprava CSS selektorů** - Opravena nekonzistence mezi TSX třídou a CSS selektorem
 - **Styling placeholderu** - Placeholder má nyní správně ztlumený vzhled
 
+### Migrace na desktop (24. 05. 2026) - Release 0.4.0
+- **Electron Shell**: Aplikace převedena na hybridní desktopovou s využitím `electron-vite` a `electron-builder`.
+- **Nativní Audio a Sampler**: Přidán `NativeSampleLoader` pro asynchronní diskové načítání MP3/SF2 souborů přes bezpečný IPC bridge.
+- **Správce zvukových knihoven (SampleManager)**: UI komponenta v dark/glassmorphic designu pro stahování a instalaci volitelných velkých akustických sad (Salamander Grand Piano) na disk.
+- **Auto-inicializace audia**: V desktopové verzi se zvukový engine automaticky zapne při spuštění.
+- **Packaging**: Konfigurace instalátorů pro Windows (NSIS) a Linux (AppImage) se všemi prostředky v `extraResources` a aplikovaným vlastním ikonový assetem.
+
 ---
 
 *Dokument vytvořen: 11. 12. 2025*  
-*Poslední aktualizace: 13. 12. 2025*
+*Poslední aktualizace: 24. 05. 2026*
 
