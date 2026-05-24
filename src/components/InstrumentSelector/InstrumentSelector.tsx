@@ -184,6 +184,11 @@ export function InstrumentSelector() {
   const isLoading = loadingSoundFontId !== null;
   const selectedSoundFont = soundfonts.find((sf) => sf.id === selectedSoundFontId);
 
+  // Rozdělit nástroje do skupin pro přehledné zobrazení v optgroups
+  const synthSoundfonts = sortedSoundfonts.filter(sf => sf.url.startsWith('synthetic:'));
+  const sf2Soundfonts = sortedSoundfonts.filter(sf => sf.url.endsWith('.SF2') || sf.url.endsWith('.sf2'));
+  const acousticSoundfonts = sortedSoundfonts.filter(sf => sf.url.startsWith('preset:'));
+
   return (
     <div className="instrument-selector">
       <label htmlFor="instrument-select">Nástroj:</label>
@@ -194,11 +199,33 @@ export function InstrumentSelector() {
           onChange={(e) => handleSelect(e.target.value)}
           disabled={isLoading}
         >
-          {sortedSoundfonts.map((sf) => (
-            <option key={sf.id} value={sf.id}>
-              {sf.name} {sf.id === selectedSoundFontId && sf.loaded ? '✓' : ''}
-            </option>
-          ))}
+          {synthSoundfonts.length > 0 && (
+            <optgroup label="Syntetické (Synth)">
+              {synthSoundfonts.map((sf) => (
+                <option key={sf.id} value={sf.id}>
+                  {sf.name} {sf.id === selectedSoundFontId && sf.loaded ? '✓' : ''}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {sf2Soundfonts.length > 0 && (
+            <optgroup label="Soundfonty (SF2)">
+              {sf2Soundfonts.map((sf) => (
+                <option key={sf.id} value={sf.id}>
+                  {sf.name} {sf.id === selectedSoundFontId && sf.loaded ? '✓' : ''}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {acousticSoundfonts.length > 0 && (
+            <optgroup label="Akustické (Samples)">
+              {acousticSoundfonts.map((sf) => (
+                <option key={sf.id} value={sf.id}>
+                  {sf.name} {sf.id === selectedSoundFontId && sf.loaded ? '✓' : ''}
+                </option>
+              ))}
+            </optgroup>
+          )}
         </select>
         {isLoading && selectedSoundFont && (
           <div className="sample-loading-indicator">
