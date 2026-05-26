@@ -2,14 +2,15 @@
 
 Všechny významné změny v projektu budou zdokumentovány v tomto souboru.
 
-## [0.3.7] - 2024-12-XX
+## [0.5.1] - 2026-05-26
+
+### Přidáno
+- **Nelineární MIDI Velocity Curve**: Zavedení logaritmické křivky pro citlivost kláves. Běžné údery na MIDI klávesách jsou nyní pocitově hlasitější a jasnější bez nutnosti bušit do kláves, přičemž dynamika úhozů zůstala zachována.
+- **Fyzické vyrovnání hlasitosti (DynamicsCompressorNode)**: Zavedení centrálního kompresoru/limiteru v `AudioContextManager` na master výstupu, který normalizuje hlasitost napříč všemi nástroji a zabraňuje digitálnímu clippingu při drženém sustain pedálu.
+- **Diagnostika chyb v UI**: Zobrazení chybové zprávy pod selektorem nástrojů, pokud selže načítání sampleru nebo SF2 soundfontu.
 
 ### Opraveno
-- **Basový klíč - zobrazování not**: Opraveno zobrazování not na basové osnově. Noty se nyní zobrazují na správných pozicích pomocí přímého mapování MIDI not na VexFlow notace pro basový klíč. C3 se nyní zobrazuje mezi druhou a třetí linkou, F3 na čtvrté lince.
-- **MIDI kontroler**: Opraveno připojení a zpracování MIDI zpráv z externích kontrolerů. MIDI zprávy se nyní správně zpracovávají a zobrazují v aplikaci.
-
-Formát je založen na [Keep a Changelog](https://keepachangelog.com/cs/1.0.0/),
-a tento projekt se drží [Semantic Versioning](https://semver.org/lang/cs/).
+- **Nefunkční SF2 zvuky**: Oprava chybného volání `setMasterParameter` (změněno na `setSystemParameter` kompatibilní se SpessaSynth v4) a oprava cesty pro vyhledávání public zdrojů v dev režimu Electronu (`process.cwd()` místo `app.getAppPath()`).
 
 ## [0.5.0] - 2026-05-24
 

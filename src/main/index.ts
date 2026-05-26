@@ -80,7 +80,7 @@ ipcMain.handle('resolve-resource-path', (_, relativePath: string) => {
     return join(process.resourcesPath, relativePath)
   } else {
     // Ve vývoji jsou v public složce v rootu projektu
-    return join(app.getAppPath(), 'public', relativePath)
+    return join(process.cwd(), 'public', relativePath)
   }
 })
 

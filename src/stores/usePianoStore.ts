@@ -1,24 +1,40 @@
 import { create } from 'zustand';
 import { MIDINote } from '../types';
+import { getAudioEngine } from '../services/audio/AudioEngineInstance';
 
 interface PianoState {
   activeNotes: Set<MIDINote>;
   sustain: boolean;
-  sustainPool: Set<MIDINote>;
   
   // Actions
-  noteOn: (midi: MIDINote) => void;
+  noteOn: (midi: MIDINote, velocity?: number) => void;
   noteOff: (midi: MIDINote) => void;
   setSustain: (sustain: boolean) => void;
   clearAll: () => void;
 }
 
-export const usePianoStore = create<PianoState>((set, get) => ({
+// Pomocná funkce pro nelineární transformaci velocity (Soft Velocity Curve)
+// y = 127 * (x / 127)^0.55
+const transformVelocity = (velocity: number): number => {
+  if (velocity <= 0) return 0;
+  if (velocity >= 127) return 127;
+  return Math.round(127 * Math.pow(velocity / 127, 0.55));
+};
+
+export const usePianoStore = create<PianoState>((set) => ({
   activeNotes: new Set(),
   sustain: false,
-  sustainPool: new Set(),
 
-  noteOn: (midi: MIDINote) => {
+  noteOn: (midi: MIDINote, velocity = 127) => {
+    const transformedVelocity = transformVelocity(velocity);
+
+    // 1. Spustit zvuk přímo v audio enginu s velocity
+    const engine = getAudioEngine();
+    if (engine) {
+      engine.noteOn(midi, transformedVelocity);
+    }
+
+    // 2. Aktualizovat visual stav pro klaviaturu
     set((state) => {
       const newActiveNotes = new Set(state.activeNotes);
       newActiveNotes.add(midi);
@@ -27,49 +43,44 @@ export const usePianoStore = create<PianoState>((set, get) => ({
   },
 
   noteOff: (midi: MIDINote) => {
-    const state = get();
-    if (state.sustain) {
-      // Přidat do sustain poolu místo okamžitého uvolnění
-      set((s) => {
-        const newSustainPool = new Set(s.sustainPool);
-        newSustainPool.add(midi);
-        return { sustainPool: newSustainPool };
-      });
-    } else {
-      // Okamžité uvolnění
-      set((s) => {
-        const newActiveNotes = new Set(s.activeNotes);
-        newActiveNotes.delete(midi);
-        return { activeNotes: newActiveNotes };
-      });
+    // 1. Zastavit/Sustainovat zvuk přímo v audio enginu
+    const engine = getAudioEngine();
+    if (engine) {
+      engine.noteOff(midi);
     }
+
+    // 2. Vizuálně odebrat klávesu ihned při uvolnění
+    // (sustain si hlídá audio engine sám, takže klávesa se vizuálně uvolní, což je žádoucí)
+    set((state) => {
+      const newActiveNotes = new Set(state.activeNotes);
+      newActiveNotes.delete(midi);
+      return { activeNotes: newActiveNotes };
+    });
   },
 
   setSustain: (sustain: boolean) => {
-    set({ sustain });
-    if (!sustain) {
-      // Uvolnit všechny noty ze sustain poolu
-      const state = get();
-      set((s) => {
-        const newActiveNotes = new Set(s.activeNotes);
-        state.sustainPool.forEach((midi) => {
-          newActiveNotes.delete(midi);
-        });
-        return {
-          activeNotes: newActiveNotes,
-          sustainPool: new Set(),
-        };
-      });
+    // 1. Předat sustain do audio enginu (ten uvolní tóny ze svého poolu)
+    const engine = getAudioEngine();
+    if (engine) {
+      engine.setSustain(sustain);
     }
+
+    // 2. Aktualizovat stav pedálu v UI
+    set({ sustain });
   },
 
   clearAll: () => {
+    const engine = getAudioEngine();
+    if (engine) {
+      engine.dispose();
+      // Re-inicializovat prázdný engine by se mělo až při dalším play,
+      // ale pro jistotu uvolníme a zrušíme sustain
+      engine.setSustain(false);
+    }
+    
     set({
       activeNotes: new Set(),
-      sustainPool: new Set(),
       sustain: false,
     });
   },
 }));
-
-

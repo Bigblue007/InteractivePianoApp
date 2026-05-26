@@ -31,8 +31,8 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
   constructor() {
     this.audioContext = AudioContextManager.getContext();
     this.masterGain = this.audioContext.createGain();
-    this.masterGain.connect(this.audioContext.destination);
-    this.masterGain.gain.value = 0.7;
+    this.masterGain.connect(AudioContextManager.getMasterDestination(this.audioContext));
+    this.masterGain.gain.value = 0.7; // Výchozí gain (bude upraven dynamicky při načtení nástroje)
   }
 
   /**
@@ -41,6 +41,10 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
    * Tato implementace je placeholder pro MVP
    */
   async loadSoundFont(url: string): Promise<void> {
+    // Okamžitě resetovat stav, aby se nehrál starý nástroj při selhání načítání
+    this.loaded = false;
+    this.dispose();
+
     try {
       // Zkontrolovat, zda je to sampler preset (preset:piano-acoustic)
       if (url.startsWith('preset:')) {
@@ -63,6 +67,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
         // Načíst preset do samplera
         await this.sampler.loadPreset(preset);
         this.instrumentType = 'piano'; // Default pro sampler
+        this.masterGain.gain.value = 1.0; // Sampler si řídí hlasitost sám (má 1.8 v SimpleSampler)
         this.loaded = true;
         console.log(`Sampler preset načten: ${preset.name}`);
         return;
@@ -77,6 +82,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
         }
         
         this.instrumentType = url === 'synthetic:piano' ? 'piano' : 'dx7';
+        this.masterGain.gain.value = 0.7; // Syntetické zvuky jsou dostatečně hlasité, ponecháme původní gain
         this.loaded = true;
         console.log(`Syntetický nástroj načten: ${this.instrumentType}`);
         return;
@@ -129,6 +135,9 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       // 3. Vytvořit novou instanci WorkletSynthesizer a připojit ji do grafu
       this.synth = new WorkletSynthesizer(this.audioContext);
       this.synth.connect(this.masterGain);
+      
+      // Nastavit master gain SpessaSynth na 2.0 (místo výchozího 1.0) pro srovnání s ostatními nástroji
+      this.synth.setSystemParameter("masterGain", 2.0);
 
       // 4. Nahrát soundfont do Sound Bank Manageru
       await this.synth.soundBankManager.addSoundBank(soundFontBuffer, "main");
@@ -136,6 +145,7 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
 
       this.soundFontData = soundFontBuffer;
       this.instrumentType = 'sf2';
+      this.masterGain.gain.value = 1.6; // Výrazně zvýšíme gain pro SF2 soundfonty
       this.loaded = true;
       console.log(`Soundfont .sf2 načten a inicializován v SpessaSynth: ${url}`);
     } catch (error) {

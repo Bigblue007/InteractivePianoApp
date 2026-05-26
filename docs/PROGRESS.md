@@ -8,6 +8,8 @@
 - [x] Fáze 4: UI úpravy pro desktop
 - [x] Fáze 6: Build + packaging + testování
 - [x] Integrace lokálních SF2 soundfontů přes WASM (read-wasm-sf2)
+- [x] Oprava chování sustain pedálu a zprovoznění MIDI velocity (přímé spouštění zvuku)
+- [x] Vyřešení nízké hlasitosti a citlivosti MIDI kláves (nelineární Velocity Curve, zvýšení gainů a DynamicsCompressorNode na výstupu)
 
 ## Plánované úkoly
 (všechny fáze dokončeny)
@@ -16,3 +18,4 @@
 - [x] Vyřešen a zdokumentován instalační problém s Electron binárkami na Windows (symlinky a path.txt)
 - [x] Commit celé migrační větve `desktop/electron-migration` (skripty, main, preload, config, UI, styles, tsconfigs, ikona, dokumentace)
 - [x] Commit integrace SF2 soundfontů (nástrojový selektor, WASM syntetizér)
+- [x] Commit opravy hlasitosti a citlivosti MIDI (zprovoznění SF2 soundfontů s opravenou cestou public v dev, oprava SpessaSynth API volání)

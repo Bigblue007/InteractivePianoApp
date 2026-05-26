@@ -38,8 +38,8 @@ export class SimpleSampler {
   constructor() {
     this.audioContext = AudioContextManager.getContext();
     this.masterGain = this.audioContext.createGain();
-    this.masterGain.connect(this.audioContext.destination);
-    this.masterGain.gain.value = 0.7;
+    this.masterGain.connect(AudioContextManager.getMasterDestination(this.audioContext));
+    this.masterGain.gain.value = 1.8; // Zvýšení hlasitosti sampleru (proti syntetickým zvukům)
     
     const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
     this.sampleLoader = isElectron

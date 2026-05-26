@@ -12,6 +12,8 @@ export function InstrumentSelector() {
   const setLoadingSoundFont = useAudioStore((state) => state.setLoadingSoundFont);
   const loadingSoundFontId = useAudioStore((state) => state.loadingSoundFontId);
   const audioInitialized = useAudioStore((state) => state.initialized);
+  const error = useAudioStore((state) => state.error);
+  const setError = useAudioStore((state) => state.setError);
 
   // Přidat výchozí nástroje při mount
   // POŘADÍ: Piano (synth) první, DX7 Modern (synth) druhé, Piano (Acoustic) poslední
@@ -117,17 +119,19 @@ export function InstrumentSelector() {
         setLoadingSoundFont(selectedSoundFont.id);
       }
       
+      setError(null);
       audioEngine.loadSoundFont(selectedSoundFont.url)
         .then(() => {
           markSoundFontLoaded(selectedSoundFont.id, true);
           setLoadingSoundFont(null);
         })
-        .catch((error) => {
-          console.error('Chyba při načítání nástroje:', error);
+        .catch((err) => {
+          console.error('Chyba při načítání nástroje:', err);
+          setError(err instanceof Error ? err.message : 'Nepodařilo se načíst nástroj');
           setLoadingSoundFont(null);
         });
     }
-  }, [selectedSoundFontId, audioInitialized, soundfonts, markSoundFontLoaded, setLoadingSoundFont]);
+  }, [selectedSoundFontId, audioInitialized, soundfonts, markSoundFontLoaded, setLoadingSoundFont, setError]);
 
   const handleSelect = async (id: string) => {
     // Označit předchozí nástroj jako nenačtený
@@ -136,6 +140,7 @@ export function InstrumentSelector() {
     }
     
     selectSoundFont(id);
+    setError(null);
     
     // Pokud je audio inicializováno, načíst nástroj okamžitě
     if (audioInitialized) {
@@ -151,8 +156,9 @@ export function InstrumentSelector() {
           await audioEngine.loadSoundFont(selectedSoundFont.url);
           markSoundFontLoaded(id, true);
           setLoadingSoundFont(null);
-        } catch (error) {
-          console.error('Chyba při načítání nástroje:', error);
+        } catch (err) {
+          console.error('Chyba při načítání nástroje:', err);
+          setError(err instanceof Error ? err.message : 'Nepodařilo se načíst nástroj');
           setLoadingSoundFont(null);
         }
       }
@@ -234,6 +240,11 @@ export function InstrumentSelector() {
           </div>
         )}
       </div>
+      {error && (
+        <div className="instrument-error-message" style={{ color: '#ff4d4d', fontSize: '0.85em', marginTop: '5px' }}>
+          Chyba: {error}
+        </div>
+      )}
     </div>
   );
 }

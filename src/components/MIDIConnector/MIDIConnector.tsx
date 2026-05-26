@@ -61,7 +61,7 @@ export function MIDIConnector() {
 
         // Note On
         if (message.command === 0x90 && message.data2 > 0) {
-          pianoStore.noteOn(message.data1);
+          pianoStore.noteOn(message.data1, message.data2);
         }
         // Note Off
         else if (message.command === 0x80 || (message.command === 0x90 && message.data2 === 0)) {
