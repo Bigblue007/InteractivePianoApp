@@ -1,4 +1,4 @@
-import { OFFICIAL_SAMPLE_PACKS, SamplePack } from './SamplePackRegistry';
+import { OFFICIAL_SAMPLE_PACKS } from './SamplePackRegistry';
 
 /**
  * Třída pro správu sample knihoven v desktopové verzi

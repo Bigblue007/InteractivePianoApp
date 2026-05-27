@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SampleLibraryManager } from '../../services/sampleLibrary/SampleLibraryManager';
-import { OFFICIAL_SAMPLE_PACKS, SamplePack } from '../../services/sampleLibrary/SamplePackRegistry';
+import { OFFICIAL_SAMPLE_PACKS } from '../../services/sampleLibrary/SamplePackRegistry';
 import './SampleManager.css';
 
 interface DownloadingState {

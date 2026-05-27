@@ -57,7 +57,7 @@ Tento dokument popisuje různé možnosti publikace aplikace Harmonia na web.
 **Postup:**
 1. Přihlásit se na [netlify.com](https://netlify.com)
 2. Importovat GitHub repozitář
-3. Nastavit build command: `npm run build`
+3. Nastavit build command: `npm run build:web`
 4. Nastavit publish directory: `dist`
 5. Aplikace bude dostupná na `https://[project-name].netlify.app`
 
@@ -75,7 +75,7 @@ Tento dokument popisuje různé možnosti publikace aplikace Harmonia na web.
 - ⚠️ Nutnost SSL certifikátu pro HTTPS (Let's Encrypt)
 
 **Postup:**
-1. Build aplikace: `npm run build`
+1. Build aplikace: `npm run build:web`
 2. Nahrát obsah složky `dist` na server
 3. Nakonfigurovat web server (Nginx/Apache)
 4. Nastavit SSL certifikát
@@ -125,7 +125,7 @@ jobs:
         run: npm ci
       
       - name: Build
-        run: npm run build
+        run: npm run build:web
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -186,7 +186,7 @@ Po pushnutí do `main` branch se automaticky spustí workflow a aplikace bude do
 2. Vybrat repozitář `InteractivePianoApp`
 3. Vercel automaticky detekuje Vite a nastaví:
    - Framework Preset: Vite
-   - Build Command: `npm run build`
+   - Build Command: `npm run build:web`
    - Output Directory: `dist`
 4. Kliknout na "Deploy"
 
@@ -203,7 +203,7 @@ Vercel automaticky nasadí novou verzi při každém pushnutí do `main` branch.
 ### 1. Build aplikace lokálně
 
 ```bash
-npm run build
+npm run build:web
 ```
 
 Zkontrolovat, že build proběhl bez chyb a složka `dist` obsahuje všechny soubory.

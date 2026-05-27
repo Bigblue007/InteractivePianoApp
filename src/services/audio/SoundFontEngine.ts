@@ -17,7 +17,6 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
   private activeOscillators: Map<number, OscillatorNode[]> = new Map();
   private activeGainNodes: Map<number, GainNode[]> = new Map();
   private activeTimeouts: Map<number, ReturnType<typeof setTimeout>> = new Map();
-  // @ts-expect-error - Připraveno pro budoucí použití s TinySoundFont WASM
   private loaded: boolean = false;
   private sustain: boolean = false;
   private sustainPool: Set<number> = new Set();
@@ -137,13 +136,13 @@ export class SimpleSoundFontEngine implements SoundFontEngine {
       this.synth.connect(this.masterGain);
       
       // Nastavit master gain SpessaSynth na 2.0 (místo výchozího 1.0) pro srovnání s ostatními nástroji
+      // @ts-ignore
       this.synth.setSystemParameter("masterGain", 2.0);
 
       // 4. Nahrát soundfont do Sound Bank Manageru
       await this.synth.soundBankManager.addSoundBank(soundFontBuffer, "main");
       await this.synth.isReady;
 
-      this.soundFontData = soundFontBuffer;
       this.instrumentType = 'sf2';
       this.masterGain.gain.value = 1.6; // Výrazně zvýšíme gain pro SF2 soundfonty
       this.loaded = true;

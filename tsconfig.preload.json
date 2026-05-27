@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "noEmit": false,
     "outDir": "./out/preload",
     "module": "ESNext",
     "target": "ES2022",
